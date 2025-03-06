@@ -4,46 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - FL EduAcademy</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="logo.png" alt="FL EduAcademy">
-        </div>
+    <header class="bg-green-500 p-4">
+        <nav class="flex justify-between items-center">
+            <img src="logo.png" alt="FL EduAcademy Logo" class="w-12 h-auto">
+            <ul class="flex space-x-6">
+                <li><a href="login.html" class="text-white">Login</a></li>
+                <li><a href="signup.html" class="text-white">Sign Up</a></li>
+            </ul>
+        </nav>
     </header>
-    
-    <main>
-        <section class="form-section">
-            <h2>Create an Account</h2>
-            <form action="signup_process.html" method="POST">
-                <input type="text" name="first_name" placeholder="First Name" required>
-                <input type="text" name="middle_name" placeholder="Middle Name (Optional)">
-                <input type="text" name="last_name" placeholder="Last Name" required>
-                <input type="tel" name="phone" placeholder="Phone Number" required>
-                <input type="email" name="email" placeholder="Email Address" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-                <label>
-                    Role:
-                    <select name="role" required>
-                        <option value="teacher">Teacher</option>
-                        <option value="learner">Learner</option>
-                    </select>
-                </label>
-                <button type="submit">Sign Up</button>
-            </form>
-        </section>
+
+    <main class="max-w-lg mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">Sign Up</h1>
+        <form id="signup-form" class="space-y-4">
+            <input type="text" id="first-name" placeholder="First Name" class="w-full p-2 border">
+            <input type="text" id="last-name" placeholder="Last Name" class="w-full p-2 border">
+            <input type="email" id="email" placeholder="Email" class="w-full p-2 border">
+            <input type="password" id="password" placeholder="Password" class="w-full p-2 border">
+            <input type="password" id="confirm-password" placeholder="Confirm Password" class="w-full p-2 border">
+
+            <div id="error-message" class="text-red-500 text-sm hidden"></div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded">Sign Up</button>
+        </form>
+
+        <div class="mt-4">
+            <p>Already have an account? <a href="login.html" class="text-blue-500">Log In</a></p>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 FL EduAcademy. All rights reserved.</p>
-        <ul>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms & Conditions</a></li>
-            <li><a href="about.html">About Us</a></li>
-        </ul>
-        <p>Contact: <a href="mailto:support@fleduacademy.com">support@fleduacademy.com</a></p>
+    <footer class="bg-green-500 text-white text-center p-4">
+        <p>Contact: <a href="mailto:support@fleduacademy.com" class="underline">support@fleduacademy.com</a></p>
+        <p>&copy; 2025 FL EduAcademy</p>
+        <nav>
+            <a href="privacy.html" class="underline mx-2">Privacy Policy</a>
+            <a href="terms.html" class="underline mx-2">Terms & Conditions</a>
+            <a href="about.html" class="underline mx-2">About Us</a>
+        </nav>
     </footer>
+
+    <script src="js/signup.js"></script>
 </body>
 </html>
