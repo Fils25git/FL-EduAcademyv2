@@ -1,2 +1,8 @@
 [build]
   functions = "netlify/functions"
+
+[[redirects]]
+  from = "/sendgrid-email"
+  to = "/.netlify/functions/send-signup-email"
+  status = 200
+  force = true
