@@ -25,8 +25,25 @@
             <input type="email" id="email" placeholder="Email" class="w-full p-2 border">
             <input type="password" id="password" placeholder="Password" class="w-full p-2 border">
             <input type="password" id="confirm-password" placeholder="Confirm Password" class="w-full p-2 border">
+            
+            <!-- Role Selection Dropdown or Radio buttons -->
+            <div class="space-y-2">
+                <label class="block">Role</label>
+                <div class="flex items-center space-x-4">
+                    <label for="role-teacher">
+                        <input type="radio" id="role-teacher" name="role" value="teacher" class="mr-2"> Teacher
+                    </label>
+                    <label for="role-learner">
+                        <input type="radio" id="role-learner" name="role" value="learner" class="mr-2"> Learner
+                    </label>
+                </div>
+            </div>
 
+            <!-- Error message container -->
             <div id="error-message" class="text-red-500 text-sm hidden"></div>
+            
+            <!-- Success message container -->
+            <div id="success-message" class="text-green-500 text-sm hidden"></div>
 
             <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded">Sign Up</button>
         </form>
@@ -48,4 +65,4 @@
 
     <script src="js/signup.js"></script>
 </body>
-</html>
+    </html>
