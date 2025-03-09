@@ -100,3 +100,42 @@ async function sendWelcomeEmail(firstName, email) {
     throw new Error("Error sending email: " + emailError.message);
   }
 }
+// auth.js
+
+document.getElementById('login-form').addEventListener('submit', async function (event) {
+  event.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  // Clear previous error messages
+  const errorMessage = document.getElementById('error-message');
+  errorMessage.classList.add('hidden');
+
+  // Validate inputs
+  if (!email || !password) {
+    errorMessage.textContent = 'Please enter both email and password.';
+    errorMessage.classList.remove('hidden');
+    return;
+  }
+
+  try {
+    // Attempt to log in the user
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    // If successful, redirect to dashboard or home page
+    window.location.href = 'dashboard.html'; // Change this to the appropriate page
+
+  } catch (error) {
+    // Show error message if login fails
+    errorMessage.textContent = 'Login failed: ' + error.message;
+    errorMessage.classList.remove('hidden');
+  }
+});
