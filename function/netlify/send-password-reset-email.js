@@ -1,28 +1,26 @@
 const sgMail = require('@sendgrid/mail');
 
-// Set your SendGrid API key here
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   try {
-    const body = JSON.parse(event.body);
-    const { email, resetLink } = body;
+    const { email, resetLink } = JSON.parse(event.body);
 
     const message = {
       to: email,
       from: 'support@fleduacademy.com',
-      subject: 'Password Reset Request',
+      subject: 'Reset Your Password',
       html: `
         <h1>Password Reset Request</h1>
-        <p>You requested a password reset. Click the link below to reset your password:</p>
+        <p>Click the link below to reset your password:</p>
         <p><a href="${resetLink}">${resetLink}</a></p>
-        <p>If you did not request this change, please ignore this email.</p>
-        <p>Best regards,<br/>The FL EduAcademy Team</p>
+        <p>If you did not request this, please ignore this email.</p>
+        <p>FL EduAcademy Team</p>
       `,
     };
 
     await sgMail.send(message);
-
+    
     return {
       statusCode: 200,
       body: JSON.stringify({ message: 'Password reset email sent successfully.' }),
