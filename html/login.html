@@ -20,9 +20,10 @@
     <main class="max-w-lg mx-auto p-6">
         <h1 class="text-2xl font-bold mb-4">Log In</h1>
         <form id="login-form" class="space-y-4">
-            <input type="email" id="login-email" placeholder="Email" class="w-full p-2 border">
-            <input type="password" id="login-password" placeholder="Password" class="w-full p-2 border">
+            <input type="email" id="login-email" placeholder="Email" class="w-full p-2 border" required>
+            <input type="password" id="login-password" placeholder="Password" class="w-full p-2 border" required>
 
+            <!-- Error message container -->
             <div id="login-error-message" class="text-red-500 text-sm hidden"></div>
 
             <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded">Log In</button>
