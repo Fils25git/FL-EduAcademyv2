@@ -1,3 +1,6 @@
+// Import the signUpUser function from auth.js
+import { signUpUser } from './auth.js';
+
 document.getElementById('signup-form').addEventListener('submit', async function(event) {
   event.preventDefault();
 
@@ -13,7 +16,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
   const successMessage = document.getElementById('success-message');
   errorMessage.classList.add('hidden');
   successMessage.classList.add('hidden');
-  
+
   if (!role) {
     // Show error message if no role is selected
     errorMessage.textContent = "Please select a role (Teacher or Learner).";
@@ -28,23 +31,13 @@ document.getElementById('signup-form').addEventListener('submit', async function
     return;
   }
 
-  // Step 1: Add user to Supabase (or Firebase) database with role
-  const { data, error } = await supabase
-    .from('users')  // Assuming a table named 'users'
-    .insert([
-      { first_name: firstName, last_name: lastName, email: email, password: password, role: role.value }
-    ]);
-
-  if (error) {
-    // Show error message if there is a problem saving to the database
-    errorMessage.textContent = "Error saving user: " + error.message;
-    errorMessage.classList.remove('hidden');
-    return;
-  }
-
-  // Step 2: Send welcome email via SendGrid
+  // Step 1: Call the signUpUser function from auth.js to add user to the database
   try {
+    const userData = await signUpUser(firstName, lastName, email, password, role.value);
+
+    // Step 2: Send welcome email via SendGrid
     await sendWelcomeEmail(firstName, email);
+
     // Show success message after successful email sent
     successMessage.textContent = "Sign-up successful! A welcome email has been sent.";
     successMessage.classList.remove('hidden');
@@ -53,29 +46,34 @@ document.getElementById('signup-form').addEventListener('submit', async function
     setTimeout(function() {
       window.location.href = 'login.html';
     }, 2000);  // Delay redirect to let the user read the success message
-  } catch (emailError) {
-    // Show error message if email sending fails
-    errorMessage.textContent = "Error sending email: " + emailError.message;
+
+  } catch (error) {
+    // Show error message if anything fails (Supabase or SendGrid)
+    errorMessage.textContent = error.message;
     errorMessage.classList.remove('hidden');
   }
 });
 
-// SendGrid email sending function
+// SendGrid email sending function (same as before)
 async function sendWelcomeEmail(firstName, email) {
-  const response = await fetch('/sendgrid-email', {  // Assumes you have an endpoint to send emails
-    method: 'POST',
-    body: JSON.stringify({
-      to: email,
-      subject: 'Welcome to FL EduAcademy',
-      text: `Hello ${firstName}, welcome to FL EduAcademy! We're glad to have you on board.`
-    }),
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
+  try {
+    const response = await fetch('/.netlify/functions/send-signup-email', {
+      method: 'POST',
+      body: JSON.stringify({
+        to: email,
+        subject: 'Welcome to FL EduAcademy',
+        text: `Hello ${firstName}, welcome to FL EduAcademy! We're glad to have you on board.`
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
-  const result = await response.json();
-  if (!result.success) {
-    throw new Error("Failed to send email.");
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error("Failed to send email.");
+    }
+  } catch (emailError) {
+    throw new Error("Error sending email: " + emailError.message);
   }
-        }
+}
