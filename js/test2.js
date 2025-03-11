@@ -14,70 +14,105 @@ document.getElementById("signup-form").addEventListener("submit", async function
 
   // Get new form field values
 let firstName = document.getElementById("first-name").value;
+let// Get user input values
+let firstName = document.getElementById("first-name").value;
 let middleName = document.getElementById("middle-name").value;  // Optional
 let lastName = document.getElementById("last-name").value;
-let school = document.getElementById("school").value;  // User will write the school name
-let classSelected = document.getElementById("class").value;  // User will write the class name
-let age = document.getElementById("age").value;  // User will write the age
-let district = document.getElementById("district").value;  // User will write the district (city)
-let parentPhone = document.getElementById("parent-phone").value;  // Parent's phone number
-// Get the elements
+let school = document.getElementById("school").value;
+let classSelected = document.getElementById("class").value;
+let age = document.getElementById("age").value;
+let district = document.getElementById("district").value;
+let parentPhone = document.getElementById("parent-phone").value;
+
+// Get password fields
 let passwordInput = document.getElementById("password");
 let confirmPasswordInput = document.getElementById("confirm-password");
 let passwordError = document.getElementById("passwordError");
 let message = document.getElementById("message"); // Error message element
 
-// Function to check if passwords match
+// Function to check password match
 function checkPasswordMatch() {
     let password = passwordInput.value;
     let confirmPassword = confirmPasswordInput.value;
 
     if (password.length < 6) {
         message.innerText = "Password must be at least 6 characters long.";
-        message.style.color = "red"; // Change message color to red
-        passwordError.style.display = "none"; // Hide mismatch error if length is already invalid
+        message.style.color = "red";
+        passwordError.style.display = "none"; // Hide mismatch error if length is invalid
         return;
     } else {
-        message.innerText = ""; // Clear length error if valid
+        message.innerText = ""; // Clear error if valid
     }
 
     if (password !== confirmPassword) {
-        passwordError.style.display = "block"; // Show mismatch error
+        passwordError.style.display = "block";
         passwordError.innerText = "Passwords do not match.";
         passwordError.style.color = "red";
     } else {
-        passwordError.style.display = "none"; // Hide mismatch error
+        passwordError.style.display = "none";
     }
 }
 
-// Event listeners for real-time checking
+// Event listeners for real-time password checking
 passwordInput.addEventListener("input", checkPasswordMatch);
 confirmPasswordInput.addEventListener("input", checkPasswordMatch);
+
+// Function to generate registration number and insert user data
+async function registerUser() {
+    let password = passwordInput.value; // Get password after validation
+
+    // Validate form data
+    if (password.length < 6 || password !== confirmPasswordInput.value) {
+        message.innerText = "Fix password errors before submitting.";
+        message.style.color = "red";
+        return;
+    }
 
     let year = new Date().getFullYear();
 
     // Count existing users to generate the next Reg Number
     let { count, error: countError } = await supabase
         .from("users")
-        .select("id", { count: "exact" });
+        .select("*", { count: "exact" });
 
     if (countError) {
         console.error("Error counting users:", countError);
+        message.innerText = "Error generating registration number.";
+        message.style.color = "red";
         return;
     }
 
-    let userNumber = String(count + 1).padStart(3, "0");  // Ensure 3-digit format
+    let userNumber = String(count + 1).padStart(3, "0"); // Ensure 3-digit format
     let regNumber = `FL${year}${userNumber}`;
 
-    // Insert user data into the 'users' table
+    // Insert user data into Supabase
     let { data, error } = await supabase.from("users").insert([
-        { reg_number: regNumber, name: name, password: password }
+        {
+            reg_number: regNumber,
+            first_name: firstName,
+            middle_name: middleName || null, // Optional
+            last_name: lastName,
+            school: school,
+            class_selected: classSelected,
+            age: age,
+            district: district,
+            parent_phone: parentPhone,
+            password: password // You should hash the password before storing
+        }
     ]);
 
     if (error) {
-        document.getElementById("message").innerText = "Error: " + error.message;
+        message.innerText = "Error: " + error.message;
+        message.style.color = "red";
     } else {
-        document.getElementById("message").innerText = `Sign-up successful! Your Reg Number is: ${regNumber}`;
+        message.innerText = `Sign-up successful! Your Reg Number is: ${regNumber}`;
+        message.style.color = "green";
     }
+}
+
+// Call registerUser() when submitting the form
+document.getElementById("signup-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    registerUser();
 });
 
