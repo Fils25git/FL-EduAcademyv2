@@ -28,6 +28,16 @@ if (password.length < 6) {
     document.getElementById("message").innerText = "Password must be at least 6 characters long.";
     document.getElementById("message").style.color = "red"; // Optional: Change message color to red for errors
     return; // Stop further processing if password is too short
+    // Get password and confirm password values
+let password = document.getElementById("password").value;
+let confirmPassword = document.getElementById("confirm-password").value;
+
+// Check if the passwords match
+if (password !== confirmPassword) {
+    alert("Passwords do not match! Please ensure both passwords are the same.");
+    return false; // Prevent the form from being submitted
+}
+
 }
 
     let year = new Date().getFullYear();
