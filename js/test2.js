@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let regNumber = `FL${year}${userNumber}`;
 
         // Insert User Data
-        let { data, error } = await supabase.from("users").insert([
+        let { data, error } = await supabase.from("learners_list").insert([
             {
                 reg_number: regNumber,
                 first_name: firstName,
