@@ -12,7 +12,16 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 document.getElementById("signup-form").addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    let name = document.getElementById("name").value;
+  // Get new form field values
+let firstName = document.getElementById("first-name").value;
+let middleName = document.getElementById("middle-name").value;  // Optional
+let lastName = document.getElementById("last-name").value;
+let school = document.getElementById("school").value;  // User will write the school name
+let classSelected = document.getElementById("class").value;  // User will write the class name
+let age = document.getElementById("age").value;  // User will write the age
+let district = document.getElementById("district").value;  // User will write the district (city)
+let parentPhone = document.getElementById("parent-phone").value;  // Parent's phone number
+
     let password = document.getElementById("password").value;
     // Password validation: Ensure the password is at least 6 characters long
 if (password.length < 6) {
