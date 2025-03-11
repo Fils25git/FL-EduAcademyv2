@@ -64,6 +64,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let userNumber = String(count + 1).padStart(3, "0");
         let regNumber = `FL${year}${userNumber}`;
+        setTimeout(function() {
+            window.location.href = "test-login2.html?regNumber=" + regNumber;  // Pass regNumber in the URL
+        }, 3000); // 3-second delay to let the user see the message
 
         // Insert User Data
         let { data, error } = await supabase.from("learners_list").insert([
