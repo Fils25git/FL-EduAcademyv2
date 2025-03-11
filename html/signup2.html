@@ -18,14 +18,16 @@
 <input type="number" id="age" placeholder="Age" required><br>
 <input type="text" id="district" placeholder="District (City)" required><br>
 <input type="tel" id="parent-phone" placeholder="Parent's Phone Number" required><br>
-<label for="password">Create Password</label>
 <input type="password" id="password" name="password" required placeholder="Create your password">
+
 <label for="confirmPassword">Confirm Password</label>
 <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+
 <p class="error-message" id="passwordError" style="display:none;">Passwords do not match.</p>
- <button type="submit">Sign Up</button>
-    </form>
-    <p id="message"></p>
+
+<button type="submit">Sign Up</button>
+
+<p id="message"></p>
 
     <!-- Load Supabase JS SDK first -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> 
