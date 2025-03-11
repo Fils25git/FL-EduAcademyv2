@@ -14,7 +14,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
 
   // Get new form field values
 let firstName = document.getElementById("first-name").value;
-let// Get user input values
+// Get user input values
 let firstName = document.getElementById("first-name").value;
 let middleName = document.getElementById("middle-name").value;  // Optional
 let lastName = document.getElementById("last-name").value;
