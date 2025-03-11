@@ -1,17 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Ensure Supabase is available before initializing
     if (typeof supabase === "undefined") {
         console.error("Supabase is not loaded. Check your CDN link.");
         return;
     }
 
-    // Initialize Supabase
     const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
     
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Retrieve regNumber from URL and display it
+    // Retrieve regNumber from URL
     const urlParams = new URLSearchParams(window.location.search);
     const regNumber = urlParams.get("regNumber");
 
@@ -25,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
             messageBox.style.color = "red";
             messageBox.style.fontWeight = "bold"; 
 
-            // Store regNumber in sessionStorage (temporary storage)
             sessionStorage.setItem("userRegNumber", regNumber);
         }
     }
@@ -39,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         loginButton.disabled = !(regInput && passwordInput);
     });
 
-    // Handle login
+    // Handle login using Supabase Auth
     document.getElementById("login-form").addEventListener("submit", async function(event) {
         event.preventDefault();
 
@@ -50,14 +47,12 @@ document.addEventListener("DOMContentLoaded", function () {
         messageBox.textContent = "Logging in... Please wait.";
         messageBox.style.color = "blue";
 
-        let { data, error } = await supabaseClient
-            .from("users")
-            .select("*")
-            .eq("reg_number", regNumber)
-            .eq("password", password)
-            .single();
+        let { user, error } = await supabaseClient.auth.signInWithPassword({
+            email: regNumber + "@fleduacademy.com", // Convert regNumber to email format
+            password: password
+        });
 
-        if (error || !data) {
+        if (error || !user) {
             messageBox.textContent = "❌ Invalid Reg Number or Password";
             messageBox.style.color = "red";
         } else {
