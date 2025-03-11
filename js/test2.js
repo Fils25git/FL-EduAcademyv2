@@ -14,6 +14,12 @@ document.getElementById("signup-form").addEventListener("submit", async function
 
     let name = document.getElementById("name").value;
     let password = document.getElementById("password").value;
+    // Password validation: Ensure the password is at least 6 characters long
+if (password.length < 6) {
+    document.getElementById("message").innerText = "Password must be at least 6 characters long.";
+    document.getElementById("message").style.color = "red"; // Optional: Change message color to red for errors
+    return; // Stop further processing if password is too short
+}
 
     let year = new Date().getFullYear();
 
@@ -41,9 +47,4 @@ document.getElementById("signup-form").addEventListener("submit", async function
         document.getElementById("message").innerText = `Sign-up successful! Your Reg Number is: ${regNumber}`;
     }
 });
-// Password validation: Ensure the password is at least 6 characters long
-if (password.length < 6) {
-    document.getElementById("message").innerText = "Password must be at least 6 characters long.";
-    document.getElementById("message").style.color = "red"; // Optional: Change message color to red for errors
-    return; // Stop further processing if password is too short
-}
+
