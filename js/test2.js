@@ -1,12 +1,11 @@
 // Ensure that the script runs after everything has loaded
-window.onload = function () {
-  // Supabase URL and Key
-  const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";  // Ensure your Supabase Key is correct
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-  // Initialize the Supabase client
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Initialize Supabase
+const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
 
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
   // Handle form submission
   document.getElementById("signup-form").addEventListener("submit", async function(event) {
       event.preventDefault();
