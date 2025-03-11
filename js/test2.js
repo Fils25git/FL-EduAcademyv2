@@ -22,7 +22,24 @@ let age = document.getElementById("age").value;  // User will write the age
 let district = document.getElementById("district").value;  // User will write the district (city)
 let parentPhone = document.getElementById("parent-phone").value;  // Parent's phone number
 
-    let password = document.getElementById("password").value;
+    // Get the elements
+var passwordInput = document.getElementById("password");
+var confirmPasswordInput = document.getElementById("confirmPassword");
+var passwordError = document.getElementById("passwordError");
+
+// Function to check if passwords match
+function checkPasswordMatch() {
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        passwordError.style.display = "block";  // Show error message
+    } else {
+        passwordError.style.display = "none";  // Hide error message
+    }
+}
+
+// Event listeners for real-time checking
+passwordInput.addEventListener("input", checkPasswordMatch);  // When typing in the password field
+confirmPasswordInput.addEventListener("input", checkPasswordMatch);  // When typing in the confirm password field
+
     // Password validation: Ensure the password is at least 6 characters long
 if (password.length < 6) {
     document.getElementById("message").innerText = "Password must be at least 6 characters long.";
@@ -32,10 +49,6 @@ if (password.length < 6) {
 let password = document.getElementById("password").value;
 let confirmPassword = document.getElementById("confirm-password").value;
 
-// Check if the passwords match
-if (password !== confirmPassword) {
-    alert("Passwords do not match! Please ensure both passwords are the same.");
-    return false; // Prevent the form from being submitted
 }
 
 }
