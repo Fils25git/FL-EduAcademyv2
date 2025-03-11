@@ -1,21 +1,19 @@
 // Initialize Supabase
 const { createClient } = supabase;
-const SUPABASE_URL = "https://your-supabase-url.supabase.co";
-const SUPABASE_KEY = "your-supabase-key";
+const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-document.getElementById("test-form").addEventListener("submit", async function(event) {
+document.getElementById("signup-form").addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    // Get user input
     let name = document.getElementById("name").value;
     let password = document.getElementById("password").value;
 
-    // Get the current year
     let year = new Date().getFullYear();
 
-    // Count existing users to generate next Reg Number
+    // Count existing users to generate the next Reg Number
     let { count, error: countError } = await supabase
         .from("users")
         .select("id", { count: "exact" });
@@ -25,11 +23,9 @@ document.getElementById("test-form").addEventListener("submit", async function(e
         return;
     }
 
-    // Generate Reg Number (ensure 3-digit format)
-    let userNumber = String(count + 1).padStart(3, "0");
+    let userNumber = String(count + 1).padStart(3, "0");  // Ensure 3-digit format
     let regNumber = `FL${year}${userNumber}`;
 
-    // Insert user into the database
     let { data, error } = await supabase.from("users").insert([
         { reg_number: regNumber, name: name, password: password }
     ]);
