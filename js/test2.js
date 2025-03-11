@@ -3,7 +3,7 @@ window.onload = function () {
   const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
 
-  // Initialize supabase after the script is loaded
+  // Initialize supabase
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY); // Initialize Supabase
 
   // Handle form submission
