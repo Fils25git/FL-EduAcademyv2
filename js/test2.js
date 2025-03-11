@@ -11,9 +11,6 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 // Handle form submission
 document.getElementById("signup-form").addEventListener("submit", async function(event) {
     event.preventDefault();
-
-  // Get new form field values
-let firstName = document.getElementById("first-name").value;
 // Get user input values
 let firstName = document.getElementById("first-name").value;
 let middleName = document.getElementById("middle-name").value;  // Optional
