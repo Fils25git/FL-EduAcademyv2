@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Generate Registration Number
         let year = new Date().getFullYear();
         let { count, error: countError } = await supabase
-            .from("users")
+            .from("learners_list")
             .select("*", { count: "exact" });
 
         if (countError) {
