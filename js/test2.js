@@ -21,37 +21,38 @@ let classSelected = document.getElementById("class").value;  // User will write 
 let age = document.getElementById("age").value;  // User will write the age
 let district = document.getElementById("district").value;  // User will write the district (city)
 let parentPhone = document.getElementById("parent-phone").value;  // Parent's phone number
-
-    // Get the elements
-var passwordInput = document.getElementById("password");
-var confirmPasswordInput = document.getElementById("confirmPassword");
-var passwordError = document.getElementById("passwordError");
+// Get the elements
+let passwordInput = document.getElementById("password");
+let confirmPasswordInput = document.getElementById("confirm-password");
+let passwordError = document.getElementById("passwordError");
+let message = document.getElementById("message"); // Error message element
 
 // Function to check if passwords match
 function checkPasswordMatch() {
-    if (passwordInput.value !== confirmPasswordInput.value) {
-        passwordError.style.display = "block";  // Show error message
+    let password = passwordInput.value;
+    let confirmPassword = confirmPasswordInput.value;
+
+    if (password.length < 6) {
+        message.innerText = "Password must be at least 6 characters long.";
+        message.style.color = "red"; // Change message color to red
+        passwordError.style.display = "none"; // Hide mismatch error if length is already invalid
+        return;
     } else {
-        passwordError.style.display = "none";  // Hide error message
+        message.innerText = ""; // Clear length error if valid
+    }
+
+    if (password !== confirmPassword) {
+        passwordError.style.display = "block"; // Show mismatch error
+        passwordError.innerText = "Passwords do not match.";
+        passwordError.style.color = "red";
+    } else {
+        passwordError.style.display = "none"; // Hide mismatch error
     }
 }
 
 // Event listeners for real-time checking
-passwordInput.addEventListener("input", checkPasswordMatch);  // When typing in the password field
-confirmPasswordInput.addEventListener("input", checkPasswordMatch);  // When typing in the confirm password field
-
-    // Password validation: Ensure the password is at least 6 characters long
-if (password.length < 6) {
-    document.getElementById("message").innerText = "Password must be at least 6 characters long.";
-    document.getElementById("message").style.color = "red"; // Optional: Change message color to red for errors
-    return; // Stop further processing if password is too short
-    // Get password and confirm password values
-let password = document.getElementById("password").value;
-let confirmPassword = document.getElementById("confirm-password").value;
-
-}
-
-}
+passwordInput.addEventListener("input", checkPasswordMatch);
+confirmPasswordInput.addEventListener("input", checkPasswordMatch);
 
     let year = new Date().getFullYear();
 
