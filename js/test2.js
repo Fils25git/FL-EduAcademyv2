@@ -14,6 +14,23 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
+    let passwordInput = document.getElementById("password");
+    let confirmPasswordInput = document.getElementById("confirmPassword");
+    let passwordError = document.getElementById("passwordError");
+    let passwordMatchMessage = document.getElementById("passwordMatchMessage");
+    let message = document.getElementById("message");
+
+    // Real-time Password Matching
+    confirmPasswordInput.addEventListener("input", function() {
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            passwordMatchMessage.style.display = "block";
+            passwordMatchMessage.innerText = "Passwords do not match.";
+            passwordMatchMessage.style.color = "red";
+        } else {
+            passwordMatchMessage.style.display = "none";
+        }
+    });
+
     signupForm.addEventListener("submit", async function(event) {
         event.preventDefault();
         console.log("Form submitted!");
@@ -26,11 +43,6 @@ document.addEventListener("DOMContentLoaded", function() {
         let age = document.getElementById("age").value;
         let district = document.getElementById("district").value;
         let parentPhone = document.getElementById("parent-phone").value;
-
-        let passwordInput = document.getElementById("password");
-        let confirmPasswordInput = document.getElementById("confirmPassword");
-        let passwordError = document.getElementById("passwordError");
-        let message = document.getElementById("message");
 
         // Password Validation
         if (passwordInput.value.length < 6) {
@@ -63,7 +75,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let userNumber = String(count + 1).padStart(3, "0");
         let regNumber = `FL${year}${userNumber}`;
-        let email = `${regNumber}@fleduacademy.com`; // Auto-generate email (hidden from user)
+
+        // Generate a random suffix to ensure unique emails
+        let randomSuffix = Math.random().toString(36).substring(2, 8); // Generates a random string
+        let email = `${regNumber}-${randomSuffix}@fleduacademy.com`; // Add random suffix to the email
 
         // ✅ 1. Register user in Supabase Authentication using the generated email
         let { data: authData, error: authError } = await supabase.auth.signUp({
