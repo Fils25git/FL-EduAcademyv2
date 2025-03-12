@@ -64,12 +64,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let userNumber = String(count + 1).padStart(3, "0");
         let regNumber = `FL${year}${userNumber}`;
-        setTimeout(function() {
-            window.location.href = "test-login2.html?regNumber=" + regNumber;  // Pass regNumber in the URL
-        }, 3000); // 3-second delay to let the user see the message
+        let email = `${regNumber}@fleduacademy.com`; // Auto-generate email
 
-        // Insert User Data
-        let { data, error } = await supabase.from("learners_list").insert([
+        // ✅ 1. Register user in Supabase Authentication
+        let { data: authData, error: authError } = await supabase.auth.signUp({
+            email: email,
+            password: passwordInput.value
+        });
+
+        if (authError) {
+            console.error("Signup Error:", authError);
+            message.innerText = "Authentication Error: " + authError.message;
+            message.style.color = "red";
+            return;
+        }
+
+        console.log("✅ User signed up in authentication:", authData);
+
+        // ✅ 2. Insert user data into `learners_list` table
+        let { error: dbError } = await supabase.from("learners_list").insert([
             {
                 reg_number: regNumber,
                 first_name: firstName,
@@ -80,16 +93,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 age: age,
                 district: district,
                 parent_phone: parentPhone,
-                password: passwordInput.value // ⚠️ Should be hashed before storing
+                email: email // Store the generated email
             }
         ]);
 
-        if (error) {
-            message.innerText = "Error: " + error.message;
+        if (dbError) {
+            console.error("Database Insert Error:", dbError);
+            message.innerText = "Database Error: " + dbError.message;
             message.style.color = "red";
         } else {
-            message.innerText = `Sign-up successful! Your Reg Number is: ${regNumber}`;
+            message.innerText = `✅ Sign-up successful! Your Reg Number is: ${regNumber}`;
             message.style.color = "green";
+
+            setTimeout(function() {
+                window.location.href = "test-login2.html?regNumber=" + regNumber;
+            }, 3000);
         }
     });
 });
