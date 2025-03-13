@@ -12,28 +12,28 @@
     </header>
 
     <section id="content">
-        <!-- Part 1 -->
-        <div class="content-part" data-part="1">
+        <!-- Part 1: Introduction -->
+        <div id="part-1" class="content-part">
             <h2>Part 1: Introduction to Reproduction</h2>
-            <p>Detailed explanation of reproduction, its importance, and types (sexual vs asexual reproduction).</p>
-            <input type="checkbox" class="read-checkbox">
-            <label>I’ve read this part</label>
-            <button class="quiz-btn" disabled>Continue to the Test</button>
+            <p>Reproduction is the biological process by which organisms produce offspring. It is essential for the survival of a species and can be classified into sexual and asexual reproduction.</p>
+            <input type="checkbox" id="read-part-1">
+            <label for="read-part-1">I’ve read this part</label>
+            <button id="quiz-btn-1" disabled>Continue to the Test</button>
         </div>
 
-        <!-- Part 2 -->
-        <div class="content-part" data-part="2">
+        <!-- Part 2: Hidden until Part 1 is completed -->
+        <div id="part-2" class="content-part hidden">
             <h2>Part 2: Human Reproductive System</h2>
-            <p>Explanation of the male and female reproductive systems, organs involved, and their functions.</p>
-            <input type="checkbox" class="read-checkbox">
-            <label>I’ve read this part</label>
-            <button class="quiz-btn" disabled>Continue to the Test</button>
+            <p>The human reproductive system includes organs such as testes and ovaries, responsible for producing gametes (sperm and egg cells).</p>
+            <input type="checkbox" id="read-part-2">
+            <label for="read-part-2">I’ve read this part</label>
+            <button id="quiz-btn-2" disabled>Continue to the Test</button>
         </div>
 
-        <!-- More parts can be added here following the same structure -->
+        <!-- More parts will follow the same structure -->
 
-        <!-- Final Mastery Quiz -->
-        <div id="final-quiz">
+        <!-- Final Mastery Quiz Button -->
+        <div id="final-quiz" class="hidden">
             <button id="start-final-quiz" disabled>Start Mastery Quiz</button>
         </div>
     </section>
@@ -42,6 +42,49 @@
         <p>&copy; 2025 FL EduAcademy. All Rights Reserved.</p>
     </footer>
 
-    <script src="js/revision.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let readCheckboxes = document.querySelectorAll("input[type='checkbox']");
+            let quizButtons = document.querySelectorAll("button[id^='quiz-btn']");
+            let contentParts = document.querySelectorAll(".content-part");
+            let finalQuizButton = document.getElementById("start-final-quiz");
+
+            // Load user progress from localStorage
+            for (let i = 0; i < readCheckboxes.length; i++) {
+                let partNum = i + 1;
+                if (localStorage.getItem("completed-quiz-" + partNum)) {
+                    contentParts[i].classList.remove("hidden"); // Show next part
+                }
+            }
+
+            // Unlock quiz button when checkbox is checked
+            readCheckboxes.forEach((checkbox, index) => {
+                checkbox.addEventListener("change", function () {
+                    quizButtons[index].disabled = !checkbox.checked;
+                });
+            });
+
+            // Handle quiz button clicks
+            quizButtons.forEach((button, index) => {
+                button.addEventListener("click", function () {
+                    let partNum = index + 1;
+                    window.location.href = `quiz.html?part=${partNum}`;
+                });
+            });
+
+            // Unlock final quiz if all parts are completed
+            let totalParts = contentParts.length;
+            let completedParts = 0;
+            for (let i = 1; i <= totalParts; i++) {
+                if (localStorage.getItem("completed-quiz-" + i)) {
+                    completedParts++;
+                }
+            }
+
+            if (completedParts === totalParts) {
+                finalQuizButton.parentElement.classList.remove("hidden");
+            }
+        });
+    </script>
 </body>
 </html>
