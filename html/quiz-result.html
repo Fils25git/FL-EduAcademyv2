@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Quiz Results</h1>
+    </header>
+
+    <section id="results">
+        <h2>Your Score: <span id="score"></span></h2>
+        <p id="message"></p>
+        <a href="reproduction.html">Back to Content</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 FL EduAcademy. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let score = urlParams.get("score");
+            document.getElementById("score").innerText = score;
+
+            let message = document.getElementById("message");
+            if (score == 2) {
+                message.innerText = "Excellent! You mastered this topic!";
+            } else if (score == 1) {
+                message.innerText = "Good job! Try again to improve.";
+            } else {
+                message.innerText = "Keep practicing! You’ll get better.";
+            }
+        });
+    </script>
+</body>
+</html>
