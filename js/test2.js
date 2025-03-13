@@ -6,6 +6,7 @@ const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// Ensure DOM is loaded before running script
 document.addEventListener("DOMContentLoaded", function() {
     let signupForm = document.getElementById("signup-form");
 
@@ -14,35 +15,23 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    let passwordInput = document.getElementById("password");
-    let confirmPasswordInput = document.getElementById("confirmPassword");
-    let passwordError = document.getElementById("passwordError");
-    let passwordMatchMessage = document.getElementById("passwordMatchMessage");
-    let message = document.getElementById("message");
-
-    // Real-time Password Matching
-    confirmPasswordInput.addEventListener("input", function() {
-        if (passwordInput.value !== confirmPasswordInput.value) {
-            passwordMatchMessage.style.display = "block";
-            passwordMatchMessage.innerText = "Passwords do not match.";
-            passwordMatchMessage.style.color = "red";
-        } else {
-            passwordMatchMessage.style.display = "none";
-        }
-    });
-
     signupForm.addEventListener("submit", async function(event) {
         event.preventDefault();
-        console.log("Form submitted!");
+        console.log("Form submitted!"); // Debugging
 
         let firstName = document.getElementById("first-name").value;
-        let middleName = document.getElementById("middle-name").value;
+        let middleName = document.getElementById("middle-name").value;  
         let lastName = document.getElementById("last-name").value;
         let school = document.getElementById("school").value;
         let classSelected = document.getElementById("class").value;
         let age = document.getElementById("age").value;
         let district = document.getElementById("district").value;
         let parentPhone = document.getElementById("parent-phone").value;
+        
+        let passwordInput = document.getElementById("password");
+        let confirmPasswordInput = document.getElementById("confirmPassword"); // Fixed ID
+        let passwordError = document.getElementById("passwordError");
+        let message = document.getElementById("message");
 
         // Password Validation
         if (passwordInput.value.length < 6) {
@@ -75,12 +64,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let userNumber = String(count + 1).padStart(3, "0");
         let regNumber = `FL${year}${userNumber}`;
+        let email = `${regNumber}@fleduacademy.com`; // Auto-generate email
 
-        // Generate a random suffix to ensure unique emails
-        let randomSuffix = Math.random().toString(36).substring(2, 8); // Generates a random string
-        let email = `${regNumber}-${randomSuffix}@fleduacademy.com`; // Add random suffix to the email
-
-        // ✅ 1. Register user in Supabase Authentication using the generated email
+        // ✅ 1. Register user in Supabase Authentication
         let { data: authData, error: authError } = await supabase.auth.signUp({
             email: email,
             password: passwordInput.value
