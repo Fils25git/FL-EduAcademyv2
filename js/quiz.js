@@ -7,16 +7,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let urlParams = new URLSearchParams(window.location.search);
     let partNumber = urlParams.get("part");
 
-    // Example questions for each part (can be expanded)
+    // Example questions for each part
     const quizzes = {
         "1": [
             {
                 question: "What is reproduction?",
-                answers: ["A. The process of making food", "B. The process of producing offspring", "C. The process of breathing"],
+                answers: ["A. Making food", "B. Producing offspring", "C. Breathing"],
                 correct: 1
             },
             {
-                question: "Which type of reproduction involves two parents?",
+                question: "Which type involves two parents?",
                 answers: ["A. Asexual", "B. Sexual", "C. Budding"],
                 correct: 1
             }
@@ -67,8 +67,11 @@ document.addEventListener("DOMContentLoaded", function () {
             loadQuestion();
             nextButton.disabled = true;
         } else {
-            localStorage.setItem("quiz-score-" + partNumber, score);
-            window.location.href = `quiz-results.html?part=${partNumber}&score=${score}`;
+            // Save quiz completion in localStorage
+            localStorage.setItem("completed-quiz-" + partNumber, "true");
+
+            // Redirect back to revision content
+            window.location.href = "reproduction.html";
         }
     });
 
