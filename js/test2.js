@@ -18,21 +18,25 @@ signupForm.addEventListener("submit", async function (event) {
     let age = document.getElementById("age")?.value.trim();
     let district = document.getElementById("district")?.value.trim();
     let parentPhone = document.getElementById("parent-phone")?.value.trim();
-    let password = passwordInput.value.trim();
+    let password = document.getElementById("password")?.value.trim();
+    let confirmPassword = document.getElementById("confirm-password")?.value.trim();
 
+    // Validate that all required fields are filled, including password
     if (!firstName || !lastName || !school || !classSelected || !age || !district || !parentPhone || !password) {
         message.innerText = "Please fill in all required fields.";
         message.style.color = "red";
         return;
     }
 
+    // Validate password length (must be at least 6 characters)
     if (password.length < 6) {
         message.innerText = "Password must be at least 6 characters long.";
         message.style.color = "red";
         return;
     }
 
-    if (password !== confirmPasswordInput.value) {
+    // Check if password and confirm password match
+    if (password !== confirmPassword) {
         passwordError.style.display = "block";
         passwordError.innerText = "Passwords do not match.";
         passwordError.style.color = "red";
@@ -55,8 +59,10 @@ signupForm.addEventListener("submit", async function (event) {
     let userNumber = String(count + 1).padStart(3, "0");
     let regNumber = `FL${year}${userNumber}`;
 
+    // Ensure email is set
+    let email = `${regNumber}@fleduacademy.com`;
+
     // ✅ Sign up user in Supabase Auth
-    let email = `${regNumber}@fleduacademy.com`; // Ensure email is set
     let { data: authData, error: authError } = await supabase.auth.signUp({
         email: email,
         password: password
@@ -79,19 +85,21 @@ signupForm.addEventListener("submit", async function (event) {
         return;
     }
 
+    // Insert into database, ensuring all required fields are populated
     let { error: dbError } = await supabase.from("learners_list").insert([
         {
             user_id: userId,
             reg_number: regNumber,
-            first_name: firstName,
-            middle_name: middleName || null,
-            last_name: lastName,
-            school: school,
-            class_selected: classSelected,
-            age: age,
-            district: district,
-            parent_phone: parentPhone,
-            email: email // Don't store password
+            first_name: firstName || "Default",  // Default value if empty
+            middle_name: middleName || null,     // Middle name is optional
+            last_name: lastName || "Default",    // Default value if empty
+            school: school || "Unknown",         // Default value if empty
+            class_selected: classSelected || "Not assigned", // Default value if empty
+            age: age || 0, // Default value if empty
+            district: district || "Unknown",     // Default value if empty
+            parent_phone: parentPhone || "Unknown", // Default value if empty
+            email: email,  // Make sure email is not null
+            password: password // Ensure password is included, it's not null
         }
     ]);
 
@@ -109,5 +117,5 @@ signupForm.addEventListener("submit", async function (event) {
     setTimeout(() => {
         window.location.href = "dashboard.html";
     }, 3000);
-   });
+  });
 });
