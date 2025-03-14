@@ -23,18 +23,31 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         console.log("🟢 Form Submitted");
 
-        let regNumber = document.getElementById("reg-number").value;
-        let passwordInput = document.getElementById("password").value;
+        let regNumberInput = document.getElementById("reg-number");
+        let passwordInput = document.getElementById("password");
 
-        if (!regNumber || !passwordInput) {
+        if (!regNumberInput || !passwordInput) {
+            console.error("❌ Error: reg-number or password input not found!");
+            message.innerText = "Input fields are missing.";
+            message.style.color = "red";
+            return;
+        }
+
+        let regNumber = regNumberInput.value;
+        let password = passwordInput.value;
+
+        console.log("✅ reg-number Input Found:", regNumberInput);
+        console.log("✅ password Input Found:", passwordInput);
+        console.log("🔍 Checking regNumber:", regNumber);
+
+        if (!regNumber || !password) {
             console.log("❌ Empty fields detected");
             message.innerText = "Please enter both Registration Number and Password.";
             message.style.color = "red";
             return;
         }
 
-        console.log("🔍 Checking regNumber:", regNumber);
-
+        // Fetch email associated with regNumber
         let { data, error } = await supabase
             .from("learners_list")
             .select("email")
@@ -48,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (!data) {
+        if (!data || !data.email) {
             console.log("❌ No user found with regNumber:", regNumber);
             message.innerText = "No user found with that Registration Number.";
             message.style.color = "red";
@@ -57,9 +70,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Found Email:", data.email);
 
-        let { session, error: authError } = await supabase.auth.signInWithPassword({
+        // Authenticate user using email & password
+        let { data: session, error: authError } = await supabase.auth.signInWithPassword({
             email: data.email,
-            password: passwordInput
+            password: password
         });
 
         if (authError) {
