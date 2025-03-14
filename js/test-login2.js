@@ -1,44 +1,40 @@
-// Import Supabase SDK
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
 // Initialize Supabase
 const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ DOM Fully Loaded");
 
     let loginForm = document.getElementById("login-form");
     let message = document.getElementById("message");
+    let regNumberInput = document.getElementById("reg-number");
+    let passwordInput = document.getElementById("password");
+    let loginButton = document.getElementById("login-button");
 
     if (!loginForm) {
         console.error("❌ Error: #login-form not found!");
         return;
     }
 
-    console.log("✅ Login Form Found:", loginForm);
+    // Enable the login button when inputs are filled
+    function checkInputs() {
+        if (regNumberInput.value.trim() && passwordInput.value.trim()) {
+            loginButton.removeAttribute("disabled");
+        } else {
+            loginButton.setAttribute("disabled", "true");
+        }
+    }
+
+    regNumberInput.addEventListener("input", checkInputs);
+    passwordInput.addEventListener("input", checkInputs);
 
     loginForm.addEventListener("submit", async function (event) {
         event.preventDefault();
         console.log("🟢 Form Submitted");
 
-        let regNumberInput = document.getElementById("reg-number");
-        let passwordInput = document.getElementById("password");
-
-        if (!regNumberInput || !passwordInput) {
-            console.error("❌ Error: reg-number or password input not found!");
-            message.innerText = "Input fields are missing.";
-            message.style.color = "red";
-            return;
-        }
-
-        let regNumber = regNumberInput.value;
-        let password = passwordInput.value;
-
-        console.log("✅ reg-number Input Found:", regNumberInput);
-        console.log("✅ password Input Found:", passwordInput);
-        console.log("🔍 Checking regNumber:", regNumber);
+        let regNumber = regNumberInput.value.trim();
+        let password = passwordInput.value.trim();
 
         if (!regNumber || !password) {
             console.log("❌ Empty fields detected");
@@ -54,25 +50,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .eq("reg_number", regNumber)
             .single();
 
-        if (error) {
+        if (error || !data) {
             console.error("❌ Error fetching user by regNumber:", error);
-            message.innerText = "Error finding user. Please check your registration number.";
+            message.innerText = "User not found. Please check your Registration Number.";
             message.style.color = "red";
             return;
         }
 
-        if (!data || !data.email) {
-            console.log("❌ No user found with regNumber:", regNumber);
-            message.innerText = "No user found with that Registration Number.";
-            message.style.color = "red";
-            return;
-        }
-
-        console.log("✅ Found Email:", data.email);
+        let userEmail = data.email;
+        console.log("✅ Found Email:", userEmail);
 
         // Authenticate user using email & password
         let { data: session, error: authError } = await supabase.auth.signInWithPassword({
-            email: data.email,
+            email: userEmail,
             password: password
         });
 
@@ -89,6 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         setTimeout(function () {
             window.location.href = "dashboard.html";
-        }, 3000);
+        }, 2000);
     });
 });
