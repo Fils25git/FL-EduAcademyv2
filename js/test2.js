@@ -126,6 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 age: age,
                 district: district,
                 parent_phone: parentPhone,
+                email: email,
+                password: password,
             }
         ]);
 
