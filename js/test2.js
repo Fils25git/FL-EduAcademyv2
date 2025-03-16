@@ -8,6 +8,88 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Select the form
 const signupForm = document.getElementById("signup-form");
+const signupContainer = document.getElementById("signup-container");
+const messageContainer = document.getElementById("message-container");
+
+if (signupForm) {
+    signupForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        // Get form values
+        let firstName = document.getElementById("first-name")?.value.trim();
+        let lastName = document.getElementById("last-name")?.value.trim();
+        let school = document.getElementById("school")?.value.trim();
+        let classSelected = document.getElementById("class")?.value.trim();
+        let age = document.getElementById("age")?.value.trim();
+        let district = document.getElementById("district")?.value.trim();
+        let parentPhone = document.getElementById("parent-phone")?.value.trim();
+
+        if (!firstName || !lastName || !school || !classSelected || !age || !district || !parentPhone) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        // Generate Registration Number
+        let year = new Date().getFullYear();
+        let { count, error: countError } = await supabase.from("learners_list").select("*", { count: "exact" });
+
+        if (countError) {
+            alert("Error generating registration number.");
+            return;
+        }
+
+        let userNumber = String(count + 1).padStart(3, "0");
+        let regNumber = `FL${year}${userNumber}`;
+
+        // Insert user data into learners_list table
+        let { error: dbError } = await supabase.from("learners_list").insert([
+            {
+                reg_number: regNumber,
+                first_name: firstName,
+                last_name: lastName,
+                school: school,
+                class_selected: classSelected,
+                age: age,
+                district: district,
+                parent_phone: parentPhone
+            }
+        ]);
+
+        if (dbError) {
+            alert("Error saving user data: " + dbError.message);
+            return;
+        }
+
+        // Store reg number in Local Storage
+        localStorage.setItem("regNumber", regNumber);
+
+        // Hide form and show message
+        signupContainer.style.display = "none";
+        messageContainer.innerHTML = `
+            <div style="text-align:center; padding: 20px; border: 2px solid green; border-radius: 10px; background: #f9fff3;">
+                <h2>🎉 Welcome, Future Genius! 🎉</h2>
+                <p>Your Registration Number is: <strong>${regNumber}</strong></p>
+                <p>🚨 This is the last time you'll see it! 🚨<br>It will take a LONG time to reset it in the future! 😂</p>
+                <button id="goToLogin" style="padding: 10px 20px; margin-top: 15px; background: green; color: white; border: none; border-radius: 5px; cursor: pointer;">Go to Login</button>
+            </div>
+        `;
+
+        // Add event listener for the button
+        document.getElementById("goToLogin").addEventListener("click", () => {
+            window.location.href = "/html/test-login2.html";
+        });
+    });
+}
+// Import Supabase SDK
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+// Initialize Supabase (Use your actual public key)
+const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Select the form
+const signupForm = document.getElementById("signup-form");
 
 // Password match real-time check
 const passwordInput = document.getElementById("password");
