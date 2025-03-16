@@ -5,31 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <link rel="stylesheet" href="/css/style.css">
-
 </head>
 <body>
     <h2>Join our Global site</h2>
-<form id="signup-form">
-<input type="text" id="first-name" placeholder="First Name" required>
-<input type="text" id="middle-name" placeholder="Middle Name (optional)"><br>
-<input type="text" id="last-name" placeholder="Last Name" required><br>
-<input type="text" id="school" placeholder="School Name" required><br>
-<input type="text" id="class" placeholder="Class" required><br>
-<input type="number" id="age" placeholder="Age" required><br>
-<input type="text" id="district" placeholder="District (City)" required><br>
-<input type="tel" id="parent-phone" placeholder="Parent's Phone Number" required><br>
-<input type="password" id="password" name="password" required placeholder="Create your password">
-<input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
-<span id="passwordMatchMessage" style="display:none;"></span>
-<button type="submit">Sign Up</button>
-    
-<p id="passwordError" style="display:none; color:red;"></p>
-<p id="message" style="color:red;"></p>
 
-    <!-- Load Supabase JS SDK first -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> 
+    <form id="signup-form">
+        <input type="text" id="first-name" placeholder="First Name" required>
+        <input type="text" id="middle-name" placeholder="Middle Name (optional)">
+        <br>
+        <input type="text" id="last-name" placeholder="Last Name" required>
+        <br>
+        <input type="text" id="school" placeholder="School Name" required>
+        <br>
+        <input type="text" id="class" placeholder="Class" required>
+        <br>
+        <input type="number" id="age" placeholder="Age" required>
+        <br>
+        <input type="text" id="district" placeholder="District (City)" required>
+        <br>
+        <input type="tel" id="parent-phone" placeholder="Parent's Phone Number" required>
+        <br>
+        <input type="password" id="password" name="password" required placeholder="Create your password">
+        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+        <span id="passwordMatchMessage" style="display:none;"></span>
+        <button type="submit">Sign Up</button>
+    </form>
 
-    <!-- Load your custom script after Supabase -->
+    <p id="passwordError" style="display:none; color:red;"></p>
+    <p id="message" style="color:red;"></p>
+
+    <!-- Load Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <!-- Load custom script -->
     <script type="module" src="/js/test2.js"></script>
 </body>
 </html>
