@@ -128,12 +128,12 @@ if (signupForm) {
         // Store reg number in sessionStorage for display on login page
        let loginURL = `/html/test-login2.html?reg=${encodeURIComponent(regNumber)}`;
 
-        message.innerText = 'Signup successful! <br> Your Registration number is <strong>${regNumber}</strong>. <br> Redirecting to login...`;
-        message.style.color = "green";
+message.innerHTML = `Signup successful! <br> Your Registration number is <strong>${regNumber}</strong>. <br> Redirecting to login...`;
+message.style.color = "green";
 
+setTimeout(() => {
+    window.location.href = loginURL;
+}, 3000);
 
-        setTimeout(() => {
-            window.location.href = loginURL;
-        }, 3000);
     });
 }
