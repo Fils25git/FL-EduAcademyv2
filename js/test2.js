@@ -126,14 +126,14 @@ if (signupForm) {
         console.log("✅ User data saved to learners_list table");
 
         // Store reg number in sessionStorage for display on login page
-        sessionStorage.setItem("lastRegNumber", regNumber);
+       let loginURL = `login.html?reg=${encodeURIComponent(regNumber)}`;
 
         message.innerText = 'Signup successful! <br> Your Registration number is <strong>${regNumber}</strong>. <br> Redirecting to login...`;
         message.style.color = "green";
 
 
         setTimeout(() => {
-            window.location.href = "/html/test-login2.html";
+            window.location.href = loginURL;
         }, 3000);
     });
 }
