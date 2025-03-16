@@ -13,6 +13,13 @@ const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 const passwordMatchMessage = document.getElementById("passwordMatchMessage");
 
+// Helper function to validate password strength
+function validatePassword(password) {
+    const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    return regex.test(password);
+}
+
+// Handle password matching
 confirmPasswordInput.addEventListener("input", () => {
     if (passwordInput.value !== confirmPasswordInput.value) {
         passwordMatchMessage.style.display = "block";
@@ -43,40 +50,10 @@ if (signupForm) {
             return;
         }
 
-        if (passwordInput.value.length < 6) {
-            messageBox.innerText = "Password must be at least 6 characters long.";
+        if (!validatePassword(passwordInput.value)) {
+            messageBox.innerText = "Password must be at least 6 characters, contain 1 capital letter, and 1 number.";
             messageBox.style.color = "red";
             return;
-            document.addEventListener("DOMContentLoaded", () => {
-    const passwordInput = document.getElementById("password");
-    const confirmPasswordInput = document.getElementById("confirmPassword");
-    const passwordMatchMessage = document.getElementById("passwordMatchMessage");
-    const message = document.getElementById("message");
-
-    function validatePassword(password) {
-        const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
-        return regex.test(password);
-    }
-
-    passwordInput.addEventListener("input", () => {
-        if (!validatePassword(passwordInput.value)) {
-            message.innerText = "Password must be at least 6 characters, contain 1 capital letter, and 1 number.";
-            message.style.color = "red";
-        } else {
-            message.innerText = "";
-        }
-    });
-
-    confirmPasswordInput.addEventListener("input", () => {
-        if (passwordInput.value !== confirmPasswordInput.value) {
-            passwordMatchMessage.style.display = "block";
-            passwordMatchMessage.innerText = "Passwords do not match.";
-        } else {
-            passwordMatchMessage.style.display = "none";
-        }
-    });
-});
-
         }
 
         if (passwordInput.value !== confirmPasswordInput.value) {
@@ -123,21 +100,19 @@ if (signupForm) {
             return;
         }
 
-        let { error: dbError } = await supabase.from("learners_list").insert([
-            {
-                user_id: userId,
-                reg_number: regNumber,
-                first_name: firstName,
-                middle_name: middleName || null,
-                last_name: lastName,
-                school: school,
-                class_selected: classSelected,
-                age: age,
-                district: district,
-                parent_phone: parentPhone,
-                email: `${regNumber}@fleduacademy.com`
-            }
-        ]);
+        let { error: dbError } = await supabase.from("learners_list").insert([{
+            user_id: userId,
+            reg_number: regNumber,
+            first_name: firstName,
+            middle_name: middleName || null,
+            last_name: lastName,
+            school: school,
+            class_selected: classSelected,
+            age: age,
+            district: district,
+            parent_phone: parentPhone,
+            email: `${regNumber}@fleduacademy.com`
+        }]);
 
         if (dbError) {
             console.error("Database Insert Error:", dbError);
@@ -152,7 +127,7 @@ if (signupForm) {
         signupForm.style.display = "none";
         messageBox.innerHTML = `
             <div style="padding: 20px; background: #4CAF50; color: white; border-radius: 10px; text-align: center; font-size: 18px;">
-                <h2>🎉 Congratulations and  Welcome, Future Genius!, <strong>${firstName}</strong>!<h2> 🎊<br>
+                <h2>🎉 Congratulations and Welcome, Future Genius!, <strong>${firstName}</strong>!<h2> 🎊<br>
                 <p>Your Registration Number is: <strong>${regNumber}</strong></p>
                 <p>🚨 This is the last time you'll see it! 🚨<br>It will take a LONG time to reset it in the future! 😂</p>
                 <button id="goToLogin" style="padding: 10px 20px; margin-top: 15px; background: green; color: white; border: none; border-radius: 5px; cursor: pointer;">Go to Login</button>
@@ -164,4 +139,3 @@ if (signupForm) {
         });
     });
 }
-
