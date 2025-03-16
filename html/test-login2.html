@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <h2 id="reg-number-display"></h2>
-    <p id="reg-message"></p>
+    <h2>Login</h2>
+    
+    <!-- Display Registration Number and Announcement -->
+    <p id="reg-number-display" style="color: blue; font-weight: bold;"></p>
+    <p id="reg-message" style="color: red;"></p>
 
     <form id="login-form">
         <label for="reg-number">Enter Your Registration Number:</label>
@@ -23,6 +26,24 @@
     <p id="message"></p>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        // Wait until the DOM is fully loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            // Extract Registration Number from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const regNumber = urlParams.get("reg");
+
+            // Display the Registration Number and the announcement
+            if (regNumber) {
+                const regDisplay = document.getElementById("reg-number-display");
+                const regMessage = document.getElementById("reg-message");
+
+                regDisplay.innerHTML = `Your Registration Number: <strong>${regNumber}</strong>`;
+                regMessage.innerHTML = "Please note this down, as this is the last time it will be shown!";
+            }
+        });
+    </script>
+
     <script src="/js/test-login2.js"></script>
 </body>
 </html>
