@@ -132,7 +132,7 @@ if (signupForm) {
         message.style.color = "green";
 
         setTimeout(() => {
-            window.location.href = "test-login2.html";
+            window.location.href = "/html/test-login2.html";
         }, 3000);
     });
 }
