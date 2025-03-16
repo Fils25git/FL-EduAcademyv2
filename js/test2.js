@@ -9,6 +9,20 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 // Select the form
 const signupForm = document.getElementById("signup-form");
 
+// Password match real-time check
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+const passwordMatchMessage = document.getElementById("passwordMatchMessage");
+
+confirmPasswordInput.addEventListener("input", () => {
+    if (passwordInput.value !== confirmPasswordInput.value) {
+        passwordMatchMessage.style.display = "block";
+        passwordMatchMessage.innerText = "Passwords do not match.";
+    } else {
+        passwordMatchMessage.style.display = "none";
+    }
+});
+
 if (signupForm) {
     signupForm.addEventListener("submit", async function (event) {
         event.preventDefault();
@@ -23,10 +37,7 @@ if (signupForm) {
         let age = document.getElementById("age")?.value.trim();
         let district = document.getElementById("district")?.value.trim();
         let parentPhone = document.getElementById("parent-phone")?.value.trim();
-        let passwordInput = document.getElementById("password");
-        let confirmPasswordInput = document.getElementById("confirmPassword");
         let message = document.getElementById("message");
-        let passwordError = document.getElementById("passwordError");
 
         // Validate input fields
         if (!firstName || !lastName || !school || !classSelected || !age || !district || !parentPhone || !passwordInput.value.trim()) {
@@ -42,12 +53,11 @@ if (signupForm) {
         }
 
         if (passwordInput.value !== confirmPasswordInput.value) {
-            passwordError.style.display = "block";
-            passwordError.innerText = "Passwords do not match.";
-            passwordError.style.color = "red";
+            passwordMatchMessage.style.display = "block";
+            passwordMatchMessage.innerText = "Passwords do not match.";
             return;
         } else {
-            passwordError.style.display = "none";
+            passwordMatchMessage.style.display = "none";
         }
 
         console.log("All validations passed. Proceeding with signup...");
@@ -102,7 +112,7 @@ if (signupForm) {
                 age: age,
                 district: district,
                 parent_phone: parentPhone,
-                email: email // Don't store password
+                email: email
             }
         ]);
 
@@ -114,13 +124,15 @@ if (signupForm) {
         }
 
         console.log("✅ User data saved to learners_list table");
-        message.innerText = "Signup successful! Redirecting...";
+
+        // Store reg number in sessionStorage for display on login page
+        sessionStorage.setItem("lastRegNumber", regNumber);
+
+        message.innerText = "Signup successful! Redirecting to login...";
         message.style.color = "green";
 
         setTimeout(() => {
-            window.location.href = "dashboard.html";
+            window.location.href = "login.html";
         }, 3000);
     });
-} else {
-    console.error("Signup form not found in the DOM!");
 }
