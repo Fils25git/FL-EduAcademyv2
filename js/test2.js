@@ -110,4 +110,3 @@ signupForm.addEventListener("submit", async function (event) {
         window.location.href = "dashboard.html";
     }, 3000);
    });
-});
