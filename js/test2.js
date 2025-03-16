@@ -6,7 +6,7 @@ const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Select the form
+// Select the form and other DOM elements
 const signupForm = document.getElementById("signup-form");
 const messageBox = document.getElementById("message");
 const passwordInput = document.getElementById("password");
@@ -29,6 +29,12 @@ confirmPasswordInput.addEventListener("input", () => {
     }
 });
 
+// Function to send welcome email after successful signup
+async function sendWelcomeEmail(userEmail) {
+    // Placeholder for sending email (Use your preferred email service)
+    console.log(`Welcome email sent to ${userEmail}`);
+}
+
 if (signupForm) {
     signupForm.addEventListener("submit", async function (event) {
         event.preventDefault();
@@ -44,6 +50,7 @@ if (signupForm) {
         let district = document.getElementById("district")?.value.trim();
         let parentPhone = document.getElementById("parent-phone")?.value.trim();
 
+        // Validation
         if (!firstName || !lastName || !school || !classSelected || !age || !district || !parentPhone || !passwordInput.value.trim()) {
             messageBox.innerText = "Please fill in all required fields.";
             messageBox.style.color = "red";
@@ -122,6 +129,9 @@ if (signupForm) {
         }
 
         console.log("✅ User data saved to learners_list table");
+
+        // Send welcome email
+        await sendWelcomeEmail(`${regNumber}@fleduacademy.com`);
 
         // Hide form and show success message
         signupForm.style.display = "none";
