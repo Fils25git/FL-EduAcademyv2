@@ -128,8 +128,9 @@ if (signupForm) {
         // Store reg number in sessionStorage for display on login page
         sessionStorage.setItem("lastRegNumber", regNumber);
 
-        message.innerText = "Signup successful! Redirecting to login...";
+        message.innerText = 'Signup successful! <br> Your Registration number is <strong>${regNumber}</strong>. <br> Redirecting to login...`;
         message.style.color = "green";
+
 
         setTimeout(() => {
             window.location.href = "/html/test-login2.html";
