@@ -5,7 +5,6 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL = "https://lrwqsjxvbyxfaxncxisg.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxyd3Fzanh2Ynl4ZmF4bmN4aXNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE0ODI3NzQsImV4cCI6MjA1NzA1ODc3NH0.gpFO3mW2hKRYleTRn3UEU0IgdNsIDgLdttQBnflu2qc"; // Use your Supabase key here
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
 // Select the form and other DOM elements
 const signupForm = document.getElementById("signup-form");
 const messageBox = document.getElementById("message");
@@ -15,7 +14,7 @@ const passwordMatchMessage = document.getElementById("passwordMatchMessage");
 
 // Helper function to validate password strength
 function validatePassword(password) {
-    const regex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{6,}$/;
     return regex.test(password);
 }
 
@@ -29,15 +28,15 @@ confirmPasswordInput.addEventListener("input", () => {
     }
 });
 
-// Function to send welcome email after successful signup
+// Function to send welcome email
 async function sendWelcomeEmail(userEmail) {
-    // Placeholder for sending email (Use your preferred email service)
     console.log(`Welcome email sent to ${userEmail}`);
 }
 
 if (signupForm) {
     signupForm.addEventListener("submit", async function (event) {
         event.preventDefault();
+        console.clear();
         console.log("Form submitted!");
 
         // Get form values
@@ -58,7 +57,7 @@ if (signupForm) {
         }
 
         if (!validatePassword(passwordInput.value)) {
-            messageBox.innerText = "Password must be at least 6 characters, contain 1 capital letter, and 1 number.";
+            messageBox.innerText = "Password must be at least 6 characters, contain 1 uppercase, 1 lowercase, 1 number, and 1 special character.";
             messageBox.style.color = "red";
             return;
         }
@@ -74,7 +73,9 @@ if (signupForm) {
         console.log("All validations passed. Proceeding with signup...");
 
         let year = new Date().getFullYear();
-        let { count, error: countError } = await supabase.from("learners_list").select("*", { count: "exact" });
+        let { count, error: countError } = await supabase
+            .from("learners_list")
+            .select("*", { count: "exact", head: true });
 
         if (countError) {
             console.error("Error counting users:", countError);
@@ -137,15 +138,15 @@ if (signupForm) {
         signupForm.style.display = "none";
         messageBox.innerHTML = `
             <div style="padding: 20px; background: #4CAF50; color: white; border-radius: 10px; text-align: center; font-size: 18px;">
-                <h2>🎉 Congratulations and Welcome, Future Genius!, <strong>${firstName}</strong>!<h2> 🎊<br>
+                <h2>🎉 Congratulations and Welcome, Future Genius! <strong>${firstName}</strong>! 🎊</h2>
                 <p>Your Registration Number is: <strong>${regNumber}</strong></p>
-                <p>🚨 This is the last time you'll see it! 🚨<br>It will take a LONG time to reset it in the future! 😂</p>
+                <p>🚨 Save this Registration Number! 🚨</p>
                 <button id="goToLogin" style="padding: 10px 20px; margin-top: 15px; background: green; color: white; border: none; border-radius: 5px; cursor: pointer;">Go to Login</button>
             </div>
         `;
 
         document.getElementById("goToLogin").addEventListener("click", () => {
-            window.location.href = "/html/test-login2.html?reg=${encodeURIComponent(regNumber)}";
+            window.location.href = `/html/test-login2.html?reg=${encodeURIComponent(regNumber)}`;
         });
     });
 }
