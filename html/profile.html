@@ -12,7 +12,13 @@
     </header>
     <main>
         <div id="profile-container">
-            <img id="profile-picture" src="/images/default-avatar.png" alt="Profile Picture">
+            <img id="profile-picture" src="/images/default-avatar.png" alt="Profile Picture" width="150">
+            
+            <!-- File Upload Input -->
+            <input type="file" id="profile-pic-input" accept="image/*">
+            <button id="upload-btn">Upload Photo</button>
+            <p id="upload-message"></p>
+
             <h2 id="full-name"></h2>
             <p><strong>Registration Number:</strong> <span id="reg-number"></span></p>
             <p><strong>Email:</strong> <span id="email"></span></p>
@@ -22,7 +28,8 @@
             <p><strong>District:</strong> <span id="district"></span></p>
         </div>
     </main>
-      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="/js/profile.js"></script> <!-- External JS -->
 </body>
 </html>
