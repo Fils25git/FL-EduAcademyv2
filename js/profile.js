@@ -8,8 +8,8 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 document.addEventListener("DOMContentLoaded", async () => {
     const userId = localStorage.getItem("user_id"); // Assuming user_id is stored after login
     if (!userId) {
-        alert("User not logged in!");
-        window.location.href = "/html/login.html";
+        alert("Please you have to be logged in to view the profile!");
+        window.location.href = "/html/test-login2.html";
         return;
     }
 
