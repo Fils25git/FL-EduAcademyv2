@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learner Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>FL EduAcademy - Learner Dashboard</h1>
+        <nav>
+            <ul>
+                <li><a href="#revise">Revise</a></li>
+                <li><a href="#feeds">Feeds</a></li>
+                <li><a href="#class">Class</a></li>
+                <li><a href="#school">School</a></li>
+            </ul>
+        </nav>
+        <a href="profile.html" id="profile-link">
+            <img src="images/default-profile.png" alt="Profile" id="profile-pic">
+        </a>
+    </header>
+    
+    <section id="feeds">
+        <h2>Feeds</h2>
+        <div id="posts-container">
+            <p>Loading posts...</p>
+        </div>
+    </section>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/learner_dashboard.js"></script>
+</body>
+</html>
