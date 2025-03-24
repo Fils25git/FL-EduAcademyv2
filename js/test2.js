@@ -141,7 +141,8 @@ if (signupForm) {
             <div style="padding: 20px; background: #4CAF50; color: white; border-radius: 10px; text-align: center; font-size: 18px;">
                 <h2>🎉 Congratulations and Welcome, Future Genius! <strong>${firstName}</strong>! 🎊</h2>
                 <p>Your Registration Number is: <strong>${regNumber}</strong></p>
-                <p>🚨 Save this Registration Number! 🚨</p>
+                <h3>🚨 Save this Registration Number! 🚨</h3>
+                <p>This is the last time you'll see this Registration number of yours keep it well or screenshot it. and recovering it will take couple of days</p> 
                 <button id="goToLogin" style="padding: 10px 20px; margin-top: 15px; background: green; color: white; border: none; border-radius: 5px; cursor: pointer;">Go to Login</button>
             </div>
         `;
