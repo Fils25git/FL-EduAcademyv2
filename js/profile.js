@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// Handle Profile Picture Upload
 document.getElementById("upload-btn").addEventListener("click", async () => {
     const fileInput = document.getElementById("profile-pic-input");
     const uploadMessage = document.getElementById("upload-message");
@@ -63,7 +62,7 @@ document.getElementById("upload-btn").addEventListener("click", async () => {
         return;
     }
 
-    const filePath = `profile-pictures/${userId}/${file.name}`;
+    const filePath = `${userId}/${file.name}`;  // ✅ FIXED FILE PATH
 
     // Upload image to Supabase Storage
     let { error } = await supabase.storage
@@ -78,7 +77,7 @@ document.getElementById("upload-btn").addEventListener("click", async () => {
 
     // Get public URL of uploaded image
     const { data } = supabase.storage.from("profile-pictures").getPublicUrl(filePath);
-    const imageUrl = data.publicUrl;
+    const imageUrl = data.publicUrl;  // ✅ FIXED URL GENERATION
 
     console.log("Image uploaded:", imageUrl);
 
