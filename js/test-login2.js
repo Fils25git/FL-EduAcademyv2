@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         message.style.color = "green";
 
         setTimeout(function () {
-            window.location.href = "dashboard.html";
+            window.location.href = "learner_dashboard.html";
         }, 2000);
     });
 });
