@@ -14,9 +14,10 @@ const passwordMatchMessage = document.getElementById("passwordMatchMessage");
 
 // Helper function to validate password strength
 function validatePassword(password) {
-    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{6,}$/;
+    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{6,}$/;
     return regex.test(password);
 }
+
 
 // Handle password matching
 confirmPasswordInput.addEventListener("input", () => {
