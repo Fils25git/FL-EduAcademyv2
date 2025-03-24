@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Populate profile fields
-        document.getElementById("profile-picture").src = userData.profile_picture || "https://via.placeholder.com/150";
+        document.getElementById("profile-picture").src = userData.profile_picture || "https://i.imgur.com/TV9o8j1.png";
         document.getElementById("full-name").innerText = `${userData.first_name} ${userData.middle_name || ""} ${userData.last_name}`;
         document.getElementById("reg-number").innerText = userData.reg_number;
         document.getElementById("email").innerText = userData.email;
