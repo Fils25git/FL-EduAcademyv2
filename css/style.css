@@ -15,6 +15,51 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+.form-container {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    margin: 30px auto;
+}
+
+/* Form Title */
+h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 1rem;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fafafa;
+    transition: all 0.3s ease-in-out;
+}
+
+.form-group input:focus {
+    border-color: #5c6bc0;
+    background-color: #fff;
+    outline: none;
+}
 
 header nav ul {
     list-style: none;
