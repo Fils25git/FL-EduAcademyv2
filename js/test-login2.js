@@ -9,78 +9,83 @@ document.addEventListener("DOMContentLoaded", async function () {
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let loginForm = document.getElementById("login-form");
-    let message = document.getElementById("message");
-    let regNumberInput = document.getElementById("reg-number");
-    let passwordInput = document.getElementById("password");
-    let loginButton = document.getElementById("login-button");
+let message = document.getElementById("message");
+let regNumberInput = document.getElementById("reg-number");
+let passwordInput = document.getElementById("password");
+let loginButton = document.getElementById("login-button");
 
-    if (!loginForm) {
-        console.error("❌ Error: #login-form not found!");
+if (!loginForm) {
+    console.error("❌ Error: #login-form not found!");
+    return;
+}
+
+// Enable the login button when inputs are filled
+function checkInputs() {
+    if (regNumberInput.value.trim() && passwordInput.value.trim()) {
+        loginButton.removeAttribute("disabled");
+    } else {
+        loginButton.setAttribute("disabled", "true");
+    }
+}
+
+regNumberInput.addEventListener("input", checkInputs);
+passwordInput.addEventListener("input", checkInputs);
+
+loginForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    console.log("🟢 Form Submitted");
+
+    let regNumber = regNumberInput.value.trim();
+    let password = passwordInput.value.trim();
+
+    if (!regNumber || !password) {
+        console.log("❌ Empty fields detected");
+        message.innerText = "Please enter both Registration Number and Password.";
+        message.style.color = "red";
         return;
     }
 
-    // Enable the login button when inputs are filled
-    function checkInputs() {
-        if (regNumberInput.value.trim() && passwordInput.value.trim()) {
-            loginButton.removeAttribute("disabled");
-        } else {
-            loginButton.setAttribute("disabled", "true");
-        }
+    // Fetch email associated with regNumber
+    let { data, error } = await supabase
+        .from("learners_list")
+        .select("email, user_id")
+        .eq("reg_number", regNumber)
+        .single();
+
+    if (error || !data) {
+        console.error("❌ Error fetching user by regNumber:", error);
+        message.innerText = "User not found. Please check your Registration Number.";
+        message.style.color = "red";
+        return;
     }
 
-    regNumberInput.addEventListener("input", checkInputs);
-    passwordInput.addEventListener("input", checkInputs);
+    let userEmail = data.email;
+    let userId = data.user_id;
+    console.log("✅ Found Email:", userEmail, " | User ID:", userId);
 
-    loginForm.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        console.log("🟢 Form Submitted");
-
-        let regNumber = regNumberInput.value.trim();
-        let password = passwordInput.value.trim();
-
-        if (!regNumber || !password) {
-            console.log("❌ Empty fields detected");
-            message.innerText = "Please enter both Registration Number and Password.";
-            message.style.color = "red";
-            return;
-        }
-
-        // Fetch email associated with regNumber
-        let { data, error } = await supabase
-            .from("learners_list")
-            .select("email")
-            .eq("reg_number", regNumber)
-            .single();
-
-        if (error || !data) {
-            console.error("❌ Error fetching user by regNumber:", error);
-            message.innerText = "User not found. Please check your Registration Number.";
-            message.style.color = "red";
-            return;
-        }
-
-        let userEmail = data.email;
-        console.log("✅ Found Email:", userEmail);
-
-        // Authenticate user using email & password
-        let { data: session, error: authError } = await supabase.auth.signInWithPassword({
-            email: userEmail,
-            password: password
-        });
-
-        if (authError) {
-            console.error("❌ Login Error:", authError);
-            message.innerText = "Authentication Error: " + authError.message;
-            message.style.color = "red";
-            return;
-        }
-
-        console.log("✅ User logged in successfully:", session);
-        message.innerText = "Login successful! Redirecting...";
-        message.style.color = "green";
-
-        setTimeout(function () {
-            window.location.href = "learner_dashboard.html";
-        }, 2000);
+    // Authenticate user using email & password
+    let { data: session, error: authError } = await supabase.auth.signInWithPassword({
+        email: userEmail,
+        password: password
     });
+
+    if (authError) {
+        console.error("❌ Login Error:", authError);
+        message.innerText = "Authentication Error: " + authError.message;
+        message.style.color = "red";
+        return;
+    }
+
+    if (session.user) {
+        localStorage.setItem("user_id", userId); // Store user ID
+        console.log("✅ User ID saved:", userId);
+    }
+
+    console.log("✅ User logged in successfully:", session);
+    message.innerText = "Login successful! Redirecting...";
+    message.style.color = "green";
+
+    setTimeout(function () {
+        window.location.href = "learner_dashboard.html";
+    }, 2000);
 });
