@@ -27,12 +27,20 @@
     </header>
     
     <section id="feeds">
-        <h2>Feeds</h2>
-        <div id="posts-container">
-            <p>Loading posts...</p>
-        </div>
-    </section>
+    <h2>posts</h2>
+    
+    <!-- Post creation section with textarea -->
+    <div id="post-creation">
+        <textarea id="postContent" placeholder="Write something..." rows="4" cols="50"></textarea>
+        <button id="postButton">Post</button>
+    </div>
+    
+    <!-- Display posts -->
+    <div id="posts-container">
+        <p>Loading posts...</p>
+    </div>
+</section>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script type="module" src="/js/learner_dashboard.js"></script>
+ <script type="module" src="/js/learner_dashboard.js"></script>
 </body>
 </html>
