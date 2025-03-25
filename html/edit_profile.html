@@ -69,51 +69,6 @@
             await uploadProfilePicture(file);
         }
     });
-
-    // Function to handle file upload to Supabase Storage
-    async function uploadProfilePicture(file) {
-        const userId = localStorage.getItem("user_id") || sessionStorage.getItem("user_id");
-
-        if (!userId) {
-            alert("You must be logged in to update your profile.");
-            return;
-        }
-
-        const fileName = `profile_pictures/${Date.now()}_${file.name}`;
-
-        try {
-            // Upload the file to Supabase Storage
-            const { data, error } = await supabase.storage
-                .from("profile-pictures")
-                .upload(fileName, file, { contentType: file.type });
-
-            if (error) {
-                throw new Error("Upload failed: " + error.message);
-            }
-
-            // Get the public URL of the uploaded file
-            const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/profile-pictures/${fileName}`;
-
-            // Update the profile picture URL in the database
-            const { error: updateError } = await supabase
-                .from("learners_list")
-                .update({ profile_picture: imageUrl })
-                .eq("user_id", userId);
-
-            if (updateError) {
-                throw new Error("Failed to update profile picture in the database.");
-            }
-
-            // Update the profile picture preview with the new URL
-            profilePicture.src = imageUrl;
-            alert("Profile picture updated successfully!");
-
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Error uploading profile picture.");
-        }
-    }
-</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script type="module" src="/js/editProfile.js"></script>
 </html>
