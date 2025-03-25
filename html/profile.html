@@ -16,14 +16,7 @@
 
 <!-- Hidden File Upload Input -->
 <input type="file" id="profile-pic-input" style="display:none; text-align:center;" accept="image/*">
-          <!--  <button id="upload-btn">update profile picture</button>-->
             <p id="upload-message"></p>
-           <button onclick="location.href='edit_profile.html'" 
-    style="background-color: transparent; border: 5px solid black; padding: 16px 5px; font-size: 16px; width: 200px; height: 20px;">
-    Edit Your Profile
-</button>
-
-
             <h2 id="full-name"></h2>
             <p><strong>Registration Number:</strong> <span id="reg-number"></span></p>
             <p><strong>Parent's Phone Number:</strong> <span id="phone"></span></p>
@@ -31,6 +24,10 @@
             <p><strong>Class:</strong> <span id="class-selected"></span></p>
             <p><strong>Age:</strong> <span id="age"></span></p>
             <p><strong>District:</strong> <span id="district"></span></p>
+            <button onclick="location.href='edit_profile.html'" 
+    style="background-color:blue; border: 5px solid black; padding: 16px 5px; font-size: 16px; width: 100px; height: 20px;">
+    Edit Your Profile
+</button>
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
