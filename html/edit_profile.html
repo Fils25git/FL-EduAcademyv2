@@ -10,19 +10,35 @@
     <div class="form-container">
         <h2>Edit Your Profile</h2>
         <form id="edit-profile-form">
-            <input type="text" id="first-name" placeholder="First Name" required>
-            <input type="text" id="middle-name" placeholder="Middle Name (optional)">
-            <input type="text" id="last-name" placeholder="Last Name" required>
-            <input type="text" id="school" placeholder="School Name" required>
-            <input type="text" id="class" placeholder="Class" required>
-            <input type="number" id="age" placeholder="Age" required>
-            <input type="text" id="district" placeholder="District (City)" required>
-            <input type="tel" id="parent-phone" placeholder="Parent's Phone Number" required>
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" required>
+
+            <label for="middle-name">Middle Name (optional):</label>
+            <input type="text" id="middle-name">
+
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" required>
+
+            <label for="school">School Name:</label>
+            <input type="text" id="school" required>
+
+            <label for="class">Class:</label>
+            <input type="text" id="class" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" required>
+
+            <label for="district">District (City):</label>
+            <input type="text" id="district" required>
+
+            <label for="parent-phone">Parent's Phone Number:</label>
+            <input type="tel" id="parent-phone" required>
+
             <button type="submit">Save Changes</button>
         </form>
         <p id="message" style="color: green;"></p>
     </div>
 </body>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-   <script type="module" src="/js/editProfile.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script type="module" src="/js/editProfile.js"></script>
 </html>
