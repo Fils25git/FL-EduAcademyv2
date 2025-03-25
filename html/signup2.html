@@ -8,32 +8,61 @@
 </head>
 <body>
     <div class="form-container">
-    <h2>Join our Global site</h2>
+    <h2>Join our Global Site</h2>
     <form id="signup-form">
-        <input type="text" id="first-name" placeholder="First Name" required>
-        <input type="text" id="middle-name" placeholder="Middle Name (optional)">
+        <label for="first-name">First Name:</label>
+        <input type="text" id="first-name" placeholder="First Name" required title="Enter your first name">
+
+        <label for="middle-name">Middle Name (Optional):</label>
+        <input type="text" id="middle-name" placeholder="Middle Name (optional)" title="Enter your middle name (if any)">
+
         <br>
-        <input type="text" id="last-name" placeholder="Last Name" required>
+
+        <label for="last-name">Last Name:</label>
+        <input type="text" id="last-name" placeholder="Last Name" required title="Enter your last name">
+
         <br>
-        <input type="text" id="school" placeholder="School Name" required>
+
+        <label for="school">School Name:</label>
+        <input type="text" id="school" placeholder="School Name" required title="Enter your school name">
+
         <br>
-        <input type="text" id="class" placeholder="Class" required>
+
+        <label for="class">Class:</label>
+        <input type="text" id="class" placeholder="Class" required title="Enter your current class level">
+
         <br>
-        <input type="number" id="age" placeholder="Age" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" placeholder="Age" required title="Enter your age">
+
         <br>
-        <input type="text" id="district" placeholder="District (City)" required>
+
+        <label for="district">District (City):</label>
+        <input type="text" id="district" placeholder="District (City)" required title="Enter your district or city">
+
         <br>
-        <input type="tel" id="parent-phone" placeholder="Parent's Phone Number" required>
+
+        <label for="parent-phone">Parent's Phone Number:</label>
+        <input type="tel" id="parent-phone" placeholder="Parent's Phone Number" required title="Enter your parent's phone number">
+
         <br>
-        <input type="password" id="password" name="password" required placeholder="Create your password">
-        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+
+        <label for="password">Create Password:</label>
+        <input type="password" id="password" name="password" required placeholder="Create your password" title="Create a strong password">
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" title="Re-enter your password to confirm">
+        
         <span id="passwordMatchMessage" style="display:none; color:red;"></span>
+
         <button type="submit">Sign Up</button>
     </form>
 
     <p id="passwordError" style="display:none; color:red;"></p>
     <p id="message" style="color:red;"></p>
 </div>
+
     <!-- Load Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
