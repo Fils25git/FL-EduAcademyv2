@@ -91,6 +91,16 @@ header {
 .dashboard {
     padding: 20px;
 }
+ul li a {
+    font-size: 18px;
+    color: #333;
+    text-decoration: none;
+}
+ul li a i {
+    margin-right: 8px;
+    color: #007bff; /* Change this to match your theme */
+    font-size: 20px;
+}
 
 .section {
     background: white;
