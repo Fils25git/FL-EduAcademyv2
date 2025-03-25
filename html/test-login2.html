@@ -14,11 +14,11 @@
     <p id="reg-message" style="color: red;"></p>
 
     <form id="login-form">
-        <label for="reg-number">Enter Your Registration Number:</label>
-        <input type="text" id="reg-number" name="reg-number" required>
+        <label for="reg-number">Registration Number:</label>
+        <input type="text" id="reg-number" name="reg-number" required title="Enter your assigned registration number">
 
-        <label for="password">Enter Your Password:</label>
-        <input type="password" id="password" name="password" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required title="Enter your account password">
 
         <button id="login-button" type="submit" disabled>Login</button>
     </form>
@@ -39,8 +39,8 @@
                 const regDisplay = document.getElementById("reg-number-display");
                 const regMessage = document.getElementById("reg-message");
 
-                regDisplay.innerHTML = ` This is  Your Registration Number: <strong>${regNumber}</strong>`;
-                regMessage.innerHTML = "Please note this down, as this is the LAST TIME time it will be shown and RECOVERING  it can take couple of days!";
+                regDisplay.innerHTML = `This is Your Registration Number: <strong>${regNumber}</strong>`;
+                regMessage.innerHTML = "Please note this down, as this is the LAST TIME it will be shown and RECOVERING it can take a couple of days!";
             }
         });
     </script>
