@@ -12,24 +12,44 @@
     </header>
     <main>
         <div id="profile-container">
-           <img id="profile-picture" src="https://i.imgur.com/TV9o8j1.png" alt="Profile Picture">
+         <img id="profile-picture" src="https://i.imgur.com/TV9o8j1.png" alt="Profile Picture">
 
-
-            
-            <!-- File Upload Input -->
-            <input type="file" id="profile-pic-input" placeholder="Edit" accept="image/*">
+<!-- Hidden File Upload Input -->
+<input type="file" id="profile-pic-input" accept="image/*">
             <button id="upload-btn">update profile picture</button>
             <p id="upload-message"></p>
 
             <h2 id="full-name"></h2>
             <p><strong>Registration Number:</strong> <span id="reg-number"></span></p>
-            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Parent's Phone Number:</strong> <span id="phone"></span></p>
             <p><strong>School:</strong> <span id="school"></span></p>
             <p><strong>Class:</strong> <span id="class-selected"></span></p>
             <p><strong>Age:</strong> <span id="age"></span></p>
             <p><strong>District:</strong> <span id="district"></span></p>
         </div>
     </main>
+    <script>
+    // Get elements
+    const profilePicture = document.getElementById("profile-picture");
+    const fileInput = document.getElementById("profile-pic-input");
+
+    // When the profile picture is clicked, open file input
+    profilePicture.addEventListener("click", function() {
+        fileInput.click();
+    });
+
+    // When a new file is selected, update the profile picture
+    fileInput.addEventListener("change", function(event) {
+        const file = event.target.files[0]; // Get the selected file
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profilePicture.src = e.target.result; // Set new profile picture
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="/js/profile.js"></script> <!-- External JS -->
