@@ -29,30 +29,8 @@
             <p><strong>District:</strong> <span id="district"></span></p>
         </div>
     </main>
-    <script>
-    // Get elements
-    const profilePicture = document.getElementById("profile-picture");
-    const fileInput = document.getElementById("profile-pic-input");
-
-    // When the profile picture is clicked, open file input
-    profilePicture.addEventListener("click", function() {
-        fileInput.click();
-    });
-
-    // When a new file is selected, update the profile picture
-    fileInput.addEventListener("change", function(event) {
-        const file = event.target.files[0]; // Get the selected file
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                profilePicture.src = e.target.result; // Set new profile picture
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script type="module" src="/js/profile.js"></script> <!-- External JS -->
+    <script src="/js/script.js"></script>
 </body>
 </html>
