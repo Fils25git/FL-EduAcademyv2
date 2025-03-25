@@ -95,8 +95,10 @@ fileInput.addEventListener("change", async function (event) {
 
     if (file) {
         const fileName = `profile_pictures/${Date.now()}_${file.name}`;
+
+        // Upload the file to the Supabase Storage bucket
         const { data, error } = await supabase.storage
-            .from("profile-pictures") // Updated bucket name
+            .from("profile-pictures") // Ensure this matches your Supabase bucket name
             .upload(fileName, file, { contentType: file.type });
 
         if (error) {
@@ -105,10 +107,10 @@ fileInput.addEventListener("change", async function (event) {
             return;
         }
 
-        // Get public URL of uploaded image
+        // Get the public URL of the uploaded file
         const imageUrl = `${SUPABASE_URL}/storage/v1/object/public/profile-pictures/${fileName}`;
 
-        // Update profile picture in database
+        // Update profile picture in the database
         let { error: updateError } = await supabase
             .from("learners_list")
             .update({ profile_picture: imageUrl })
