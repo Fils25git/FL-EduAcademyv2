@@ -52,9 +52,13 @@ async function loadPosts() {
         const followedUsers = await loadFollowedUsers();
         const followedUserIds = followedUsers.map(follow => follow.followed_id);
 
+        // Correcting the join query
         const { data: posts, error } = await supabase
             .from("posts")
-            .select(`posts.id, posts.content, posts.created_at, learners_list.user_id, learners_list.first_name, learners_list.middle_name, learners_list.last_name, learners_list.profile_picture`)
+            .select(`
+                id, content, created_at,
+                learners_list!posts_user_id_fkey(user_id, first_name, middle_name, last_name, profile_picture)
+            `)
             .order("created_at", { ascending: false });
 
         const postsContainer = document.getElementById("posts-container");
@@ -65,7 +69,8 @@ async function loadPosts() {
         postsContainer.innerHTML = "";
 
         posts.forEach(post => {
-            const fullName = [post.middle_name, post.first_name, post.last_name]
+            const learner = post.learners_list; // Access joined data properly
+            const fullName = [learner.middle_name, learner.first_name, learner.last_name]
                 .filter(Boolean)
                 .join(" ");
             const relativeTime = timeAgo(post.created_at);
@@ -73,15 +78,15 @@ async function loadPosts() {
             const postContent = `
                 <div class="post">
                     <div class="post-header">
-                        <img src="${post.profile_picture || 'default-photo.jpg'}" alt="Profile Picture" class="profile-pic">
+                        <img src="${learner.profile_picture || 'default-photo.jpg'}" alt="Profile Picture" class="profile-pic">
                         <span class="poster-name">${fullName}</span>
-                        ${followedUserIds.includes(post.user_id) ? "" : `<button class="follow-btn" data-user-id="${post.user_id}" onclick="toggleFollow('${post.user_id}')">Follow</button>`}
+                        ${followedUserIds.includes(learner.user_id) ? "" : `<button class="follow-btn" data-user-id="${learner.user_id}" onclick="toggleFollow('${learner.user_id}')">Follow</button>`}
                     </div>
                     <div class="post-content">
                         <p>${post.content}</p>
                         <small>Posted ${relativeTime}</small>
                     </div>
-                    ${!followedUserIds.includes(post.user_id) ? `<span class="trending-tag">Suggested</span>` : ""}
+                    ${!followedUserIds.includes(learner.user_id) ? `<span class="trending-tag">Suggested</span>` : ""}
                 </div>
             `;
 
@@ -96,36 +101,6 @@ async function loadPosts() {
     } catch (error) {
         console.error("Error loading posts:", error.message);
         document.getElementById("posts-container").innerHTML = `<p>Error loading posts: ${error.message}</p>`;
-    }
-}
-
-// Create a Post
-async function createPost() {
-    const postContent = document.getElementById("postContent").value.trim();
-    if (!postContent) {
-        alert("Post cannot be empty!");
-        return;
-    }
-
-    try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            alert("You must be logged in to post!");
-            return;
-        }
-
-        const { error } = await supabase.from("posts").insert([
-            { content: postContent, user_id: user.id, created_at: new Date() }
-        ]);
-
-        if (error) throw error;
-
-        alert("Post created successfully!");
-        document.getElementById("postContent").value = "";
-        loadPosts();
-    } catch (error) {
-        console.error("Error creating post:", error.message);
-        alert("Failed to post. Try again.");
     }
 }
 
