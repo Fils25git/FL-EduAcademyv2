@@ -46,6 +46,7 @@ async function loadFollowedUsers() {
 
 // Load Posts with Poster Information and Follow Link
 async function loadPosts() {
+async function loadPosts() {
     try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
@@ -53,43 +54,45 @@ async function loadPosts() {
         const followedUsers = await loadFollowedUsers();
         const followedUserIds = followedUsers.map(follow => follow.followed_id);
 
-        // Corrected query using proper foreign key reference
         const { data: posts, error } = await supabase
             .from("posts")
             .select(`
                 id, content, created_at,
-                learners_list!posts_user_id_fkey(user_id, first_name, middle_name, last_name, profile_picture)
+                learners_list(user_id, first_name, middle_name, last_name, profile_picture)
             `)
             .order("created_at", { ascending: false });
 
+        const postsContainer = document.getElementById("posts-container");
+
         if (error) throw error;
 
-        const postsContainer = document.getElementById("posts-container");
+        // Clear previous content
         postsContainer.innerHTML = "";
 
         posts.forEach(post => {
-            const learner = post.learners_list; // Access joined data properly
-            const fullName = [learner.middle_name, learner.first_name, learner.last_name]
+            const fullName = [post.middle_name, post.first_name, post.last_name]
                 .filter(Boolean)
                 .join(" ");
             const relativeTime = timeAgo(post.created_at);
 
+            // Hide follow button if the post is from the logged-in user
+            const showFollowButton = post.learners_list.user_id !== user.id && !followedUserIds.includes(post.learners_list.user_id);
+
             const postContent = `
                 <div class="post">
                     <div class="post-header">
-                        <img src="${learner.profile_picture || 'default-photo.jpg'}" alt="Profile Picture" class="profile-pic">
+                        <img src="${post.learners_list.profile_picture || 'default-photo.jpg'}" alt="Profile Picture" class="profile-pic">
                         <span class="poster-name">${fullName}</span>
-                        <!-- Show follow link after the name -->
-                        ${followedUserIds.includes(learner.user_id) ? "" : `<a href="#" class="follow-link" data-user-id="${learner.user_id}" onclick="toggleFollow('${learner.user_id}')">Follow</a>`}
+                        ${showFollowButton ? `<button class="follow-btn" data-user-id="${post.learners_list.user_id}" onclick="toggleFollow('${post.learners_list.user_id}')">Follow</button>` : ""}
                     </div>
                     <div class="post-content">
                         <p>${post.content}</p>
                         <small>Posted ${relativeTime}</small>
                     </div>
-                    ${!followedUserIds.includes(learner.user_id) ? `<span class="trending-tag">Suggested</span>` : ""}
                 </div>
             `;
 
+            // Append to the main feed
             postsContainer.innerHTML += postContent;
         });
 
@@ -102,7 +105,6 @@ async function loadPosts() {
         document.getElementById("posts-container").innerHTML = `<p>Error loading posts: ${error.message}</p>`;
     }
 }
-
 
 // Create a Post
 async function createPost() {
