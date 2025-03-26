@@ -15,6 +15,7 @@ header {
     justify-content: space-between;
     align-items: center;
 }
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -36,6 +37,7 @@ header {
     font-weight: bold;
     transition: 0.3s;
 }
+
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -53,20 +55,49 @@ nav ul li a {
     color: #000;
 }
 
-nav ul li i {
-    font-size: 30px; /* Adjust icon size */
-    margin-bottom: 5px; /* Space between icon and title */
-}
-
-nav ul li br {
-    display: block; /* Ensures line break is visible */
-}
-
 nav ul li a:hover {
     color: #007BFF; /* Hover effect */
 }
 
 .navbar a:hover {
+    text-decoration: underline;
+}
+
+/* Profile Picture and User Info */
+#profile-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+#username-follow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#username {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+#follow-link {
+    font-size: 16px;
+    text-decoration: none;
+    color: #28a745;
+    font-weight: normal;
+}
+
+#follow-link:hover {
     text-decoration: underline;
 }
 
@@ -76,7 +107,7 @@ nav ul li a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-     height: 200px;
+    height: 200px;
 }
 
 .profile-pic {
@@ -120,6 +151,7 @@ nav ul li a:hover {
 .dashboard {
     padding: 20px;
 }
+
 #post-creation {
     margin-bottom: 20px;
 }
@@ -167,11 +199,13 @@ nav ul li a:hover {
     font-size: 12px;
     color: #555;
 }
+
 ul li a {
     font-size: 18px;
     color: #333;
     text-decoration: none;
 }
+
 ul li a i {
     margin-right: 8px;
     color: #007bff; /* Change this to match your theme */
@@ -197,6 +231,7 @@ ul li a i {
         margin-top: 10px;
     }
 }
+
 #profile-container {
     margin: 20px auto;
     padding: 20px;
@@ -209,26 +244,28 @@ ul li a i {
 
 #profile-picture {
     margin-bottom: 15px;
-     object-fit: cover;
-     width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        cursor: pointer;
-        object-fit: cover;
-        border: 3px solid #28a745
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid #28a745;
 }
 
 h2 {
     margin: 10px 0;
     color: green;
 }
- #profile-pic-input {
-        display: none; /* Hide the default file input */
-    }
+
+#profile-pic-input {
+    display: none; /* Hide the default file input */
+}
+
 p {
     font-size: 16px;
     margin: 5px 0;
 }
+
 .form-container {
     background-color: white;
     padding: 2.5rem;
@@ -274,24 +311,25 @@ input:focus {
     outline: none;
     box-shadow: 0px 0px 5px rgba(76, 175, 80, 0.5);
 }
+
 .custom-file-upload {
-        display: inline-block;
-        padding: 10px 15px;
-        background-color: #28a745;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: center;
-        font-size: 16px;
-    }
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+}
 
-    .custom-file-upload:hover {
-        background-color: #218838;
-    }
+.custom-file-upload:hover {
+    background-color: #218838;
+}
 
-    #profile-pic-input {
-        display: none;
-    }
+#profile-pic-input {
+    display: none;
+}
 
 header nav ul {
     list-style: none;
@@ -347,14 +385,14 @@ button {
     cursor: pointer;
     transition: background 0.3s ease-in-out;
     width: 100%;
-   display: inline-block;
-   background-color: #28a745;
-   color: white;
-   padding: 10px 15px;
-   text-decoration: none;
-   border-radius: 5px;
-   font-weight: bold;
-   margin-top: 10px;
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 button:hover {
@@ -409,7 +447,7 @@ h2 {
 }
 
 label {
-   font-weight: bold;
+    font-weight: bold;
     margin-top: 10px;
     text-align: left;
 }
@@ -424,20 +462,6 @@ button[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-}
-button {
-    background: #4CAF50;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #45a049;
 }
 
 button[type="submit"]:hover {
