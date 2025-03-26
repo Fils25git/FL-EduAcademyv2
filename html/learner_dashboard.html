@@ -5,42 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learner Dashboard</title>
     <link rel="stylesheet" href="/css/style.css">
-    <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    </head>
 </head>
 <body>
     <header>
-    <nav>
-    <ul>
-        <li><a href="/html/learner_dashboard.html"><i class="fas fa-rss"></i><br>Feeds</a></li>
-        <li><a href="/html/revise.html"><i class="material-icons">menu_book</i><br>Revision</a></li>
-        <li><a href="#class"><i class="fas fa-chalkboard-teacher"></i><br>Class</a></li>
-        <li><a href="#school"><i class="material-icons">school</i><br>School</a></li>
-    </ul>
-</nav>
+        <nav>
+            <ul>
+                <li><a href="/html/learner_dashboard.html"><i class="fas fa-rss"></i><br>Feeds</a></li>
+                <li><a href="/html/revise.html"><i class="material-icons">menu_book</i><br>Revision</a></li>
+                <li><a href="#class"><i class="fas fa-chalkboard-teacher"></i><br>Class</a></li>
+                <li><a href="#school"><i class="material-icons">school</i><br>School</a></li>
+            </ul>
+        </nav>
         <a href="profile.html" id="profile-link">
             <img id="profile-pic" src="/default-photo.jpg" alt="Profile Picture">
-
         </a>
     </header>
     
     <section id="feeds">
-    <h2>posts</h2>
-    
-    <!-- Post creation section with textarea -->
-    <div id="post-creation">
-        <textarea id="postContent" placeholder="Write something..." rows="4" cols="50"></textarea>
-        <button id="postButton">Post</button>
-    </div>
-    
-    <!-- Display posts -->
-    <div id="posts-container">
-        <p>Loading posts...</p>
-    </div>
-</section>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- <script type="module" src="/js/learner_dashboard.js"></script>
+        <h2>Posts</h2>
+        
+        <!-- Post creation section with textarea -->
+        <div id="post-creation">
+            <textarea id="postContent" placeholder="Write something..." rows="4" cols="50"></textarea>
+            <button id="postButton">Post</button>
+        </div>
+        
+        <!-- Display posts -->
+        <div id="posts-container">
+            <p>Loading posts...</p>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="/js/learner_dashboard.js"></script>
 </body>
 </html>
