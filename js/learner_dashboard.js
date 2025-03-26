@@ -23,7 +23,7 @@ async function loadProfilePicture() {
 
         if (error) throw error;
 
-        document.getElementById("profile-pic").src = data?.profile_picture || "/default-photo.jpg";
+        document.getElementById("profile-pic").src = data?.profile_picture || "default-photo.jpg";
     } catch (error) {
         console.error("Error loading profile picture:", error.message);
     }
@@ -58,7 +58,7 @@ async function loadPosts() {
     }
 }
 
-// Create a Post
+// Create a Post (Without class_id from learners_list)
 async function createPost() {
     const postContent = document.getElementById("postContent").value.trim();
     if (!postContent) {
@@ -67,14 +67,21 @@ async function createPost() {
     }
 
     try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
+        // Get the logged-in user
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
             alert("You must be logged in to post!");
             return;
         }
 
+        // Insert post without fetching class_id from learners_list
         const { error } = await supabase.from("posts").insert([
-            { content: postContent, user_id: user.id, created_at: new Date() }
+            {
+                user_id: user.id,
+                content: postContent,
+                created_at: new Date(),
+                updated_at: new Date(),
+            }
         ]);
 
         if (error) throw error;
@@ -84,7 +91,7 @@ async function createPost() {
         loadPosts();
     } catch (error) {
         console.error("Error creating post:", error.message);
-        alert("Failed to post. Try again.");
+        alert(`Failed to post. Error: ${error.message}`);
     }
 }
 
