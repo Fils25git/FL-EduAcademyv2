@@ -44,7 +44,7 @@ async function loadFollowedUsers() {
     return follows.map(follow => follow.followed_id);
 }
 
-// Load Posts with Poster Information and Follow Button
+// Load Posts with Poster Information and Follow Link
 async function loadPosts() {
     try {
         const { data: { user } } = await supabase.auth.getUser();
@@ -79,7 +79,8 @@ async function loadPosts() {
                     <div class="post-header">
                         <img src="${learner.profile_picture || 'default-photo.jpg'}" alt="Profile Picture" class="profile-pic">
                         <span class="poster-name">${fullName}</span>
-                        ${followedUserIds.includes(learner.user_id) ? "" : `<button class="follow-btn" data-user-id="${learner.user_id}" onclick="toggleFollow('${learner.user_id}')">Follow</button>`}
+                        <!-- Show follow link after the name -->
+                        ${followedUserIds.includes(learner.user_id) ? "" : `<a href="#" class="follow-link" data-user-id="${learner.user_id}" onclick="toggleFollow('${learner.user_id}')">Follow</a>`}
                     </div>
                     <div class="post-content">
                         <p>${post.content}</p>
@@ -101,6 +102,7 @@ async function loadPosts() {
         document.getElementById("posts-container").innerHTML = `<p>Error loading posts: ${error.message}</p>`;
     }
 }
+
 
 // Create a Post
 async function createPost() {
