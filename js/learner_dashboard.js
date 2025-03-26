@@ -23,7 +23,7 @@ async function loadProfilePicture() {
 
         if (error) throw error;
 
-        document.getElementById("profile-pic").src = data?.profile_picture || "default-photo.jpg";
+        document.getElementById("profile-pic").src = data?.profile_picture || "/default-photo.jpg";
     } catch (error) {
         console.error("Error loading profile picture:", error.message);
     }
