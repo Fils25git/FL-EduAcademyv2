@@ -46,7 +46,6 @@ async function loadFollowedUsers() {
 
 // Load Posts with Poster Information and Follow Link
 async function loadPosts() {
-async function loadPosts() {
     try {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
