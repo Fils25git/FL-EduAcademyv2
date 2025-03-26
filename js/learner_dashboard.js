@@ -31,7 +31,7 @@ async function loadProfilePicture() {
     if (data && data.profile_picture) {
         profilePicElement.src = data.profile_picture;  // Set user's uploaded image
     } else {
-        profilePicElement.src = "images/default-profile.png"; // Default image
+        profilePicElement.src = "default-photo.jpg"; // Default image
     }
 }
 
