@@ -57,32 +57,29 @@ async function loadPosts() {
             .from("posts")
             .select(`
                 id, content, created_at,
-                learners_list(user_id, first_name, middle_name, last_name, profile_picture)
+                learners_list!posts_user_id_fkey(user_id, first_name, middle_name, last_name, profile_picture)
             `)
             .order("created_at", { ascending: false });
 
-        const postsContainer = document.getElementById("posts-container");
-
         if (error) throw error;
 
-        // Clear previous content
+        const postsContainer = document.getElementById("posts-container");
         postsContainer.innerHTML = "";
 
         posts.forEach(post => {
-            const fullName = [post.middle_name, post.first_name, post.last_name]
-                .filter(Boolean)
-                .join(" ");
+            const author = post.learners_list;
+            const fullName = [author.middle_name, author.first_name, author.last_name].filter(Boolean).join(" ");
             const relativeTime = timeAgo(post.created_at);
 
             // Hide follow button if the post is from the logged-in user
-            const showFollowButton = post.learners_list.user_id !== user.id && !followedUserIds.includes(post.learners_list.user_id);
+            const showFollowButton = author.user_id !== user.id && !followedUserIds.includes(author.user_id);
 
             const postContent = `
                 <div class="post">
                     <div class="post-header">
-                        <img src="${post.learners_list.profile_picture || 'default-photo.jpg'}" alt="Profile Picture" class="profile-pic">
+                        <img src="${author.profile_picture || 'default-photo.jpg'}" alt="Profile Picture" class="profile-pic">
                         <span class="poster-name">${fullName}</span>
-                        ${showFollowButton ? `<button class="follow-btn" data-user-id="${post.learners_list.user_id}" onclick="toggleFollow('${post.learners_list.user_id}')">Follow</button>` : ""}
+                        ${showFollowButton ? `<button class="follow-btn" data-user-id="${author.user_id}" onclick="toggleFollow('${author.user_id}')">Follow</button>` : ""}
                     </div>
                     <div class="post-content">
                         <p>${post.content}</p>
@@ -91,7 +88,6 @@ async function loadPosts() {
                 </div>
             `;
 
-            // Append to the main feed
             postsContainer.innerHTML += postContent;
         });
 
