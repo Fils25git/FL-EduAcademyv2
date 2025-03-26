@@ -36,6 +36,35 @@ header {
     font-weight: bold;
     transition: 0.3s;
 }
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav ul li {
+    text-align: center;
+}
+
+nav ul li a {
+    display: block;
+    text-decoration: none;
+    color: #000;
+}
+
+nav ul li i {
+    font-size: 30px; /* Adjust icon size */
+    margin-bottom: 5px; /* Space between icon and title */
+}
+
+nav ul li br {
+    display: block; /* Ensures line break is visible */
+}
+
+nav ul li a:hover {
+    color: #007BFF; /* Hover effect */
+}
 
 .navbar a:hover {
     text-decoration: underline;
