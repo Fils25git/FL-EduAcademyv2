@@ -8,61 +8,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
         }
-
-        .content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-
         header {
-            position: sticky;
+            position: fixed;
             top: 0;
             width: 100%;
-            background-color: white;
+            background: green;
             padding: 10px;
-            z-index: 1000;
-            border-bottom: 1px solid #ddd;
+            text-align: center;
+            color: white;
         }
-
         footer {
-            width: 100%;
+            margin-top: auto;
+            background: green;
             text-align: center;
             padding: 10px;
-            background-color: #f1f1f1;
-            position: relative;
+            color: white;
         }
-
-        select, button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
+        main {
+            flex: 1;
+            padding: 100px 20px 20px; /* Adjust for fixed header */
         }
-
+        select, button { 
+            display: block; 
+            margin: 10px auto; 
+            padding: 8px; 
+            width: 80%;
+        }
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <header>
-    <h2>FL EduAcademy</h2>
+    <nav>
+        <ul>
+            <li><a href="/html/learner_dashboard.html"><i class="fas fa-rss"></i> Feeds</a></li>
+            <li><a href="/html/revise.html"><i class="material-icons">menu_book</i> Revision</a></li>
+            <li><a href="#class"><i class="fas fa-chalkboard-teacher"></i> Class</a></li>
+            <li><a href="#school"><i class="material-icons">school</i> School</a></li>
+        </ul>
+    </nav>
+    <a href="profile.html" id="profile-link">
+        <img id="profile-pic" src="/default-photo.jpg" alt="Profile Picture"> Profile
+    </a>
 </header>
 
-<div class="content">
-    <h1>Select Your Class and Subject</h1>
+<main>
+    <h1>Select and Proceed</h1>
+    <p>Select Your Category, Class, and Subject before clicking <strong>NEXT</strong></p>
 
-    <label for="classCategory">Please select your class category:</label>
-    <select id="classCategory" onchange="updateClassOptions()">
+    <!-- Category Selection -->
+    <label for="category">Select Your Class Category:</label>
+    <select id="category" onchange="updateClassOptions()">
         <option value="">-- Select --</option>
         <option value="lower_primary">Lower Primary</option>
         <option value="upper_primary">Upper Primary</option>
@@ -70,18 +74,20 @@
         <option value="advanced_level">Advanced Level</option>
     </select>
 
+    <!-- Class Selection -->
     <select id="classOptions" class="hidden" onchange="updateSubjectOptions()">
-        <option value="">-- Select --</option>
+        <option value="">-- Select Class --</option>
     </select>
 
-    <select id="subjectOptions" class="hidden" onchange="updateNextButton()">
-        <option value="">-- Select --</option>
+    <!-- Subject Selection -->
+    <select id="subjectOptions" class="hidden">
+        <option value="">-- Select Subject --</option>
     </select>
 
     <a id="nextPageLink" href="#" class="hidden">
         <button>NEXT</button>
     </a>
-</div>
+</main>
 
 <footer>
     <p>Email: support@fleduacademy.com</p>
@@ -90,28 +96,27 @@
 
 <script>
     function updateClassOptions() {
-        let category = document.getElementById("classCategory").value;
+        let category = document.getElementById("category").value;
         let classOptions = document.getElementById("classOptions");
         let subjectOptions = document.getElementById("subjectOptions");
         let nextPageLink = document.getElementById("nextPageLink");
 
-        // Reset all dropdowns
-        classOptions.innerHTML = `<option value="">-- Select --</option>`;
+        classOptions.innerHTML = `<option value="">-- Select Class --</option>`;
+        subjectOptions.innerHTML = `<option value="">-- Select Subject --</option>`;
         classOptions.classList.add("hidden");
-        subjectOptions.innerHTML = `<option value="">-- Select --</option>`;
         subjectOptions.classList.add("hidden");
         nextPageLink.classList.add("hidden");
 
-        let options = {
+        let classes = {
             lower_primary: ["P1", "P2", "P3"],
             upper_primary: ["P4", "P5", "P6"],
             ordinary_level: ["S1", "S2", "S3"],
             advanced_level: ["TVET", "ANP", "TTC", "GSS"]
         };
 
-        if (options[category]) {
+        if (classes[category]) {
             classOptions.classList.remove("hidden");
-            options[category].forEach(option => {
+            classes[category].forEach(option => {
                 classOptions.innerHTML += `<option value="${option.toLowerCase()}">${option}</option>`;
             });
         }
@@ -122,71 +127,56 @@
         let subjectOptions = document.getElementById("subjectOptions");
         let nextPageLink = document.getElementById("nextPageLink");
 
+        subjectOptions.innerHTML = `<option value="">-- Select Subject --</option>`;
+        subjectOptions.classList.add("hidden");
+        nextPageLink.classList.add("hidden");
+
         let subjects = {
             lower_primary: ["English", "Social Studies", "Science and Elementary Technology", "French", "Ikinyarwanda", "Mathematics"],
             upper_primary: ["English", "Social Studies", "Science and Elementary Technology", "French", "Ikinyarwanda", "Mathematics"],
             ordinary_level: ["Biology", "Chemistry", "Physics", "Mathematics", "French", "English", "Ikinyarwanda", "History and Citizenship", "Geography and Environment"],
-            ttc: ["Languages Education", "Social and Religious Education", "Science and Mathematics Education", "Early Childhood And Lower Level Education"],
+            ttc: ["Languages Education", "Social and Religious Education", "Science and Mathematics Education", "Early Childhood and Lower Level Education"],
             tvet: ["Masonry", "Electricity", "Hotel & Tourism"],
             gss: ["MEG", "PCB", "PCM", "HGL", "BCG", "MCB"]
         };
 
-        // Reset subject options
-        subjectOptions.innerHTML = `<option value="">-- Select --</option>`;
-        subjectOptions.classList.add("hidden");
-        nextPageLink.classList.add("hidden");
+        let level = document.getElementById("category").value;
 
-        if (subjects[selectedClass]) {
-            subjectOptions.classList.remove("hidden");
+        if (level === "advanced_level" && selectedClass === "ttc") {
+            subjectOptions.innerHTML = `<option value="">-- Select Subcombination --</option>`;
+            ["Languages Education", "Social and Religious Education", "Science and Mathematics Education", "Early Childhood and Lower Level Education"].forEach(option => {
+                subjectOptions.innerHTML += `<option value="${selectedClass.toLowerCase()}_${option.toLowerCase()}">${selectedClass} ${option}</option>`;
+            });
+        } else if (subjects[selectedClass]) {
             subjects[selectedClass].forEach(option => {
                 subjectOptions.innerHTML += `<option value="${option.toLowerCase()}">${option}</option>`;
             });
         }
 
-        updateNextPageLink(selectedClass);
+        if (subjects[selectedClass] || (level === "advanced_level" && selectedClass === "ttc")) {
+            subjectOptions.classList.remove("hidden");
+        }
     }
 
-    function updateNextButton() {
-        let selectedSubject = document.getElementById("subjectOptions").value;
+    document.getElementById("subjectOptions").addEventListener("change", function() {
+        let subject = this.value;
         let nextPageLink = document.getElementById("nextPageLink");
+        let pages = {
+            english: "english.html",
+            mathematics: "math.html",
+            biology: "biology.html",
+            chemistry: "chemistry.html",
+            physics: "physics.html",
+            // Add more mappings as needed
+        };
 
-        if (selectedSubject) {
+        if (pages[subject]) {
+            nextPageLink.href = pages[subject];
             nextPageLink.classList.remove("hidden");
         } else {
             nextPageLink.classList.add("hidden");
         }
-    }
-
-    function updateNextPageLink(selectedClass) {
-        let nextPageLink = document.getElementById("nextPageLink");
-
-        let pages = {
-            p1: "p1.html",
-            p2: "p2.html",
-            p3: "p3.html",
-            p4: "p4.html",
-            p5: "p5.html",
-            p6: "p6.html",
-            s1: "s1.html",
-            s2: "s2.html",
-            s3: "s3.html",
-            s4: "s4.html",
-            s5: "s5.html",
-            s6: "s6.html",
-            y1: "y1.html",
-            y2: "y2.html",
-            y3: "y3.html",
-            l3: "l3.html",
-            l4: "l4.html",
-            l5: "l5.html"
-        };
-
-        if (pages[selectedClass]) {
-            nextPageLink.href = pages[selectedClass];
-        } else {
-            nextPageLink.href = "#";
-        }
-    }
+    });
 </script>
 </body>
-</html>
+    </html>
