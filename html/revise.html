@@ -39,9 +39,9 @@
         <option value="advanced_level">Advanced Level</option>
     </select>
     
-    <select id="classOptions" onchange="updateAdvancedOptions()" class="hidden">
-        <option value="">-- Select --</option>
-    </select>
+    <select id="advancedOptions" class="hidden" onchange="updateFinalSelection()">
+    <option value="">-- Select --</option>
+</select>
 
     <select id="advancedOptions" class="hidden">
         <option value="">-- Select --</option>
@@ -84,6 +84,10 @@
             }
 
             updateNextPageLink(category);
+        }
+        function updateFinalSelection() {
+    let finalSelection = document.getElementById("advancedOptions").value;
+    updateNextPageLink(finalSelection);
         }
 
         function updateAdvancedOptions() {
