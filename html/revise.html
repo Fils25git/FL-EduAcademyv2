@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        /* Ensure page layout pushes footer to bottom */
         html, body {
             height: 100%;
             margin: 0;
@@ -16,7 +15,6 @@
             flex-direction: column;
         }
 
-        /* Make the main content expand dynamically */
         .content {
             flex-grow: 1;
             display: flex;
@@ -27,25 +25,24 @@
             padding: 20px;
         }
 
-        /* Sticky header at the top */
         header {
             position: sticky;
             top: 0;
             width: 100%;
+            background-color: white;
             padding: 10px;
             z-index: 1000;
             border-bottom: 1px solid #ddd;
         }
 
-        /* Footer always at the bottom */
         footer {
             width: 100%;
             text-align: center;
             padding: 10px;
+            background-color: #f1f1f1;
             position: relative;
         }
 
-        /* Style dropdowns and buttons */
         select, button {
             margin: 10px;
             padding: 10px;
@@ -58,23 +55,11 @@
 <body>
 
 <header>
-    <nav>
-        <ul>
-            <li><a href="/html/learner_dashboard.html"><i class="fas fa-rss"></i><br>Feeds</a></li>
-            <li><a href="/html/revise.html"><i class="material-icons">menu_book</i><br>Revision</a></li>
-            <li><a href="#class"><i class="fas fa-chalkboard-teacher"></i><br>Class</a></li>
-            <li><a href="#school"><i class="material-icons">school</i><br>School</a></li>
-        </ul>
-    </nav>
-    <a href="profile.html" id="profile-link">
-        <img id="profile-pic" src="/default-photo.jpg" alt="Profile Picture"><br>Profile
-    </a>
+    <h2>FL EduAcademy</h2>
 </header>
 
-<!-- Main Content Area -->
 <div class="content">
-    <h1>Select and Next</h1>
-    <p>Select Your Appropriate Side And Tap <strong>NEXT</strong> to go to the Next Page</p>
+    <h1>Select Your Class and Subject</h1>
 
     <label for="classCategory">Please select your class category:</label>
     <select id="classCategory" onchange="updateClassOptions()">
@@ -85,11 +70,11 @@
         <option value="advanced_level">Advanced Level</option>
     </select>
 
-    <select id="classOptions" class="hidden" onchange="updateAdvancedOptions()">
+    <select id="classOptions" class="hidden" onchange="updateSubjectOptions()">
         <option value="">-- Select --</option>
     </select>
 
-    <select id="advancedOptions" class="hidden" onchange="updateFinalSelection()">
+    <select id="subjectOptions" class="hidden" onchange="updateNextButton()">
         <option value="">-- Select --</option>
     </select>
 
@@ -98,7 +83,6 @@
     </a>
 </div>
 
-<!-- Footer at the bottom -->
 <footer>
     <p>Email: support@fleduacademy.com</p>
     <p>&copy; 2025 FL EduAcademy. All rights reserved.</p>
@@ -108,14 +92,14 @@
     function updateClassOptions() {
         let category = document.getElementById("classCategory").value;
         let classOptions = document.getElementById("classOptions");
-        let advancedOptions = document.getElementById("advancedOptions");
+        let subjectOptions = document.getElementById("subjectOptions");
         let nextPageLink = document.getElementById("nextPageLink");
 
         // Reset all dropdowns
         classOptions.innerHTML = `<option value="">-- Select --</option>`;
         classOptions.classList.add("hidden");
-        advancedOptions.innerHTML = `<option value="">-- Select --</option>`;
-        advancedOptions.classList.add("hidden");
+        subjectOptions.innerHTML = `<option value="">-- Select --</option>`;
+        subjectOptions.classList.add("hidden");
         nextPageLink.classList.add("hidden");
 
         let options = {
@@ -133,39 +117,47 @@
         }
     }
 
-    function updateAdvancedOptions() {
+    function updateSubjectOptions() {
         let selectedClass = document.getElementById("classOptions").value;
-        let advancedOptions = document.getElementById("advancedOptions");
+        let subjectOptions = document.getElementById("subjectOptions");
         let nextPageLink = document.getElementById("nextPageLink");
 
-        let advancedLevels = {
-            tvet: ["L3", "L4", "L5"],
-            anp: ["S4", "S5", "S6"],
-            ttc: ["Y1", "Y2", "Y3"],
-            gss: ["S4", "S5", "S6"]
+        let subjects = {
+            lower_primary: ["English", "Social Studies", "Science and Elementary Technology", "French", "Ikinyarwanda", "Mathematics"],
+            upper_primary: ["English", "Social Studies", "Science and Elementary Technology", "French", "Ikinyarwanda", "Mathematics"],
+            ordinary_level: ["Biology", "Chemistry", "Physics", "Mathematics", "French", "English", "Ikinyarwanda", "History and Citizenship", "Geography and Environment"],
+            ttc: ["Languages Education", "Social and Religious Education", "Science and Mathematics Education", "Early Childhood And Lower Level Education"],
+            tvet: ["Masonry", "Electricity", "Hotel & Tourism"],
+            gss: ["MEG", "PCB", "PCM", "HGL", "BCG", "MCB"]
         };
 
-        // Reset advanced options
-        advancedOptions.innerHTML = `<option value="">Choose The Grade</option>`;
-        advancedOptions.classList.add("hidden");
+        // Reset subject options
+        subjectOptions.innerHTML = `<option value="">-- Select --</option>`;
+        subjectOptions.classList.add("hidden");
         nextPageLink.classList.add("hidden");
 
-        if (advancedLevels[selectedClass]) {
-            advancedOptions.classList.remove("hidden");
-            advancedLevels[selectedClass].forEach(option => {
-                advancedOptions.innerHTML += `<option value="${option.toLowerCase()}">${option}</option>`;
+        if (subjects[selectedClass]) {
+            subjectOptions.classList.remove("hidden");
+            subjects[selectedClass].forEach(option => {
+                subjectOptions.innerHTML += `<option value="${option.toLowerCase()}">${option}</option>`;
             });
         }
 
         updateNextPageLink(selectedClass);
     }
 
-    function updateFinalSelection() {
-        let finalSelection = document.getElementById("advancedOptions").value;
-        updateNextPageLink(finalSelection);
+    function updateNextButton() {
+        let selectedSubject = document.getElementById("subjectOptions").value;
+        let nextPageLink = document.getElementById("nextPageLink");
+
+        if (selectedSubject) {
+            nextPageLink.classList.remove("hidden");
+        } else {
+            nextPageLink.classList.add("hidden");
+        }
     }
 
-    function updateNextPageLink(selectedValue) {
+    function updateNextPageLink(selectedClass) {
         let nextPageLink = document.getElementById("nextPageLink");
 
         let pages = {
@@ -181,22 +173,20 @@
             s4: "s4.html",
             s5: "s5.html",
             s6: "s6.html",
-            l3: "l3.html",
-            l4: "l4.html",
-            l5: "l5.html",
             y1: "y1.html",
             y2: "y2.html",
-            y3: "y3.html"
+            y3: "y3.html",
+            l3: "l3.html",
+            l4: "l4.html",
+            l5: "l5.html"
         };
 
-        if (pages[selectedValue]) {
-            nextPageLink.href = pages[selectedValue];
-            nextPageLink.classList.remove("hidden");
+        if (pages[selectedClass]) {
+            nextPageLink.href = pages[selectedClass];
         } else {
-            nextPageLink.classList.add("hidden");
+            nextPageLink.href = "#";
         }
     }
 </script>
-
 </body>
 </html>
