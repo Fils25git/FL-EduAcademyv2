@@ -27,10 +27,10 @@
         </a>
 </header>
 <body>
-
+<section class="hero">
     <label for="classCategory">Please select your class category:</label>
     <select id="classCategory" onchange="updateClassOptions()">
-        <option value="">-- Select Category --</option>
+        <option value="">-- Select --</option>
         <option value="lower_primary">Lower Primary</option>
         <option value="upper_primary">Upper Primary</option>
         <option value="ordinary_level">Ordinary Level</option>
@@ -38,16 +38,17 @@
     </select>
     
     <select id="classOptions" onchange="updateAdvancedOptions()" class="hidden">
-        <option value="">Select a Class</option>
+        <option value="">-- Select --</option>
     </select>
 
     <select id="advancedOptions" class="hidden">
-        <option value="">Choose The Grade</option>
+        <option value="">-- Select --</option>
     </select>
 
     <a id="nextPageLink" href="#" class="hidden">
         <button>NEXT</button>
     </a>
+</section>
         <footer>
         <p>Email: support@fleduacademy.com</p>
         <p>&copy; 2025 FL EduAcademy. All rights reserved.</p>
@@ -60,9 +61,9 @@
             let advancedOptions = document.getElementById("advancedOptions");
             let nextPageLink = document.getElementById("nextPageLink");
 
-            classOptions.innerHTML = `<option value="">Select a Class</option>`;
+            classOptions.innerHTML = `<option value="">-- Select --</option>`;
             classOptions.classList.add("hidden");
-            advancedOptions.innerHTML = `<option value="">Choose The Grade</option>`;
+            advancedOptions.innerHTML = `<option value="">-- Select --</option>`;
             advancedOptions.classList.add("hidden");
             nextPageLink.classList.add("hidden");
 
