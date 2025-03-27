@@ -38,11 +38,11 @@
     </select>
     
     <select id="classOptions" onchange="updateAdvancedOptions()" class="hidden">
-        <option value="">......</option>
+        <option value="">Select a Class</option>
     </select>
 
     <select id="advancedOptions" class="hidden">
-        <option value="">Choose the Combination</option>
+        <option value="">Choose The Grade</option>
     </select>
 
     <a id="nextPageLink" href="#" class="hidden">
@@ -60,9 +60,9 @@
             let advancedOptions = document.getElementById("advancedOptions");
             let nextPageLink = document.getElementById("nextPageLink");
 
-            classOptions.innerHTML = `<option value="">......</option>`;
+            classOptions.innerHTML = `<option value="">Select a Class</option>`;
             classOptions.classList.add("hidden");
-            advancedOptions.innerHTML = `<option value="">Choose the Combination</option>`;
+            advancedOptions.innerHTML = `<option value="">Choose The Grade</option>`;
             advancedOptions.classList.add("hidden");
             nextPageLink.classList.add("hidden");
 
@@ -95,7 +95,7 @@
                 gss: ["S4", "S5", "S6"]
             };
 
-            advancedOptions.innerHTML = `<option value="">Choose the Combination</option>`;
+            advancedOptions.innerHTML = `<option value="">Choose The Grade</option>`;
             advancedOptions.classList.add("hidden");
             nextPageLink.classList.add("hidden");
 
