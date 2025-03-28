@@ -5,7 +5,23 @@ body {
     padding: 0;
     background-color: #f4f4f4;
 }
+select,{
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 16px;
+}
 
+button {
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkgreen;
+}
 /* Header */
 header {
     background-color: #28a745; /* Green */
