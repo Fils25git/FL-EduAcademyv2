@@ -38,6 +38,7 @@ const subjectSelect = document.getElementById("subject");
 const combinationSelect = document.getElementById("combination");
 const subCombinationSelect = document.getElementById("subCombination");
 const nextButton = document.getElementById("nextBtn");
+const errorMessage = document.getElementById("errorMsg"); // Error message div
 
 // Hide/show fields based on selection
 function resetDropdown(dropdown) {
@@ -58,18 +59,49 @@ function updateDropdown(dropdown, items) {
     }
 }
 
+// Function to check if all required selections are made
+function validateSelections() {
+    let category = categorySelect.value;
+    let classSelected = classSelect.value;
+    let subjectSelected = subjectSelect.value;
+    let combinationSelected = combinationSelect.value;
+    let subCombinationSelected = subCombinationSelect.value;
+
+    let isValid = false;
+
+    if (category === "Primary" || category === "Ordinary") {
+        isValid = category && classSelected && subjectSelected;
+    } else if (category === "Advanced") {
+        if (combinationSelected === "ANP") {
+            isValid = combinationSelected && classSelected;
+        } else {
+            isValid = combinationSelected && subCombinationSelected && classSelected;
+        }
+    }
+
+    if (isValid) {
+        errorMessage.style.display = "none";
+        nextButton.style.display = "block";
+    } else {
+        nextButton.style.display = "none";
+    }
+}
+
 // Handle category selection
 categorySelect.addEventListener("change", function () {
     resetDropdown(classSelect);
     resetDropdown(subjectSelect);
     resetDropdown(combinationSelect);
     resetDropdown(subCombinationSelect);
+    nextButton.style.display = "none";
 
     if (this.value === "Primary" || this.value === "Ordinary") {
         updateDropdown(classSelect, Object.keys(data[this.value.toLowerCase()]));
     } else if (this.value === "Advanced") {
         updateDropdown(combinationSelect, Object.keys(data.advanced));
     }
+
+    validateSelections();
 });
 
 // Handle class selection for Primary/Ordinary
@@ -77,6 +109,7 @@ classSelect.addEventListener("change", function () {
     if (categorySelect.value === "Primary" || categorySelect.value === "Ordinary") {
         updateDropdown(subjectSelect, data[categorySelect.value.toLowerCase()][this.value]);
     }
+    validateSelections();
 });
 
 // Handle combination selection for Advanced
@@ -89,16 +122,19 @@ combinationSelect.addEventListener("change", function () {
     } else {
         updateDropdown(subCombinationSelect, Object.keys(data.advanced[this.value]));
     }
+
+    validateSelections();
 });
 
 // Handle subCombination selection for Advanced
 subCombinationSelect.addEventListener("change", function () {
     updateDropdown(classSelect, data.advanced[combinationSelect.value][this.value]);
+    validateSelections();
 });
 
-// Handle subject/class selection for Advanced
+// Handle class selection for Advanced
 classSelect.addEventListener("change", function () {
-    nextButton.style.display = "block";
+    validateSelections();
 });
 
 // Handle NEXT button click
@@ -112,18 +148,31 @@ nextButton.addEventListener("click", function () {
     let url = "";
 
     if (category === "primary" || category === "ordinary") {
+        if (!selectedClass || !selectedSubject) {
+            errorMessage.style.display = "block";
+            errorMessage.textContent = "Please complete all selections before proceeding.";
+            return;
+        }
         url = `${selectedClass}_${selectedSubject}.html`;
     } else if (category === "advanced") {
         if (combinationSelect.value === "ANP") {
+            if (!selectedClass) {
+                errorMessage.style.display = "block";
+                errorMessage.textContent = "Please complete all selections before proceeding.";
+                return;
+            }
             url = `anp_${selectedClass}.html`;
         } else {
+            if (!selectedCombination || !selectedSubCombination || !selectedClass) {
+                errorMessage.style.display = "block";
+                errorMessage.textContent = "Please complete all selections before proceeding.";
+                return;
+            }
             url = `${selectedCombination}_${selectedSubCombination}_${selectedClass}.html`;
         }
     }
 
     if (url) {
         window.location.href = url;
-    } else {
-        alert("Please complete all selections before proceeding.");
     }
 });
