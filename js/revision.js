@@ -39,12 +39,13 @@ const combinationSelect = document.getElementById("combination");
 const subCombinationSelect = document.getElementById("subCombination");
 const nextButton = document.getElementById("nextBtn");
 
-// Hide/show fields based on selection
+// Reset dropdowns
 function resetDropdown(dropdown) {
     dropdown.innerHTML = '<option value="">-- Select --</option>';
     dropdown.style.display = "none";
 }
 
+// Update dropdowns
 function updateDropdown(dropdown, items) {
     resetDropdown(dropdown);
     if (items && items.length > 0) {
@@ -69,18 +70,23 @@ categorySelect.addEventListener("change", function () {
     if (this.value === "Primary") {
         updateDropdown(classSelect, Object.keys(data.primary));
     } else if (this.value === "Ordinary") {
-        updateDropdown(classSelect, data.ordinary["Ordinary Level"]); // Fix for Ordinary Level
+        updateDropdown(classSelect, data.ordinary["Ordinary Level"]);
     } else if (this.value === "Advanced") {
         updateDropdown(combinationSelect, Object.keys(data.advanced));
     }
 });
 
-// Handle class selection for Primary/Ordinary
+// Handle class selection for Primary
 classSelect.addEventListener("change", function () {
     resetDropdown(subjectSelect);
+    
     if (categorySelect.value === "Primary") {
         updateDropdown(subjectSelect, data.primary[this.value]);
+        
+        // Move subjectSelect below classSelect in DOM order
+        subjectSelect.parentNode.appendChild(subjectSelect);
     }
+
     checkIfReadyToProceed();
 });
 
@@ -107,7 +113,7 @@ classSelect.addEventListener("change", checkIfReadyToProceed);
 // Check if selections are complete before displaying the next button
 function checkIfReadyToProceed() {
     if (
-        (categorySelect.value === "Primary" && classSelect.value && subjectSelect.value) ||
+        (categorySelect.value === "Primary" && classSelect.value && subjectSelect.value) ||  // Fix for Primary
         (categorySelect.value === "Ordinary" && classSelect.value) ||
         (categorySelect.value === "Advanced" && combinationSelect.value && 
          ((combinationSelect.value === "ANP" && classSelect.value) || 
