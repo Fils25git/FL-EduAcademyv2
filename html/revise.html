@@ -3,65 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learner Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Select Class Category</title>
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-     <header>
-        <nav>
-            <ul>
-                <li><a href="/html/learner_dashboard.html"><i class="fas fa-rss"></i><br>Feeds</a></li>
-                <li><a href="/html/revise.html"><i class="material-icons">menu_book</i><br>Revision</a></li>
-                <li><a href="#class"><i class="fas fa-chalkboard-teacher"></i><br>Class</a></li>
-                <li><a href="#school"><i class="material-icons">school</i><br>School</a></li>
-            </ul>
-        </nav>
-        <a href="profile.html" id="profile-link">
-            <img id="profile-pic" src="/default-photo.jpg" alt="Profile Picture">
-        </a>
-    </header>
-    <h2>Select Your Category</h2>
-    
-    <!-- Category Selection -->
-    <label for="category">Choose Category:</label>
-    <select id="category">
-        <option value="">-- Select --</option>
-        <option value="Primary">Primary</option>
-        <option value="Ordinary">Ordinary Level</option>
-        <option value="Advanced">Advanced Level</option>
+
+    <h2>Please select your class category</h2>
+
+    <!-- First dropdown: Class Category -->
+    <select id="classCategory" onchange="updateClassOptions()">
+        <option value="">Select Class Category</option>
+        <option value="lowerPrimary">Lower Primary</option>
+        <option value="upperPrimary">Upper Primary</option>
+        <option value="ordinaryLevel">Ordinary Level</option>
+        <option value="advancedLevel">Advanced Level</option>
     </select>
 
+    <!-- Second dropdown for Class (changes based on the first dropdown) -->
+    <select id="classLevel" class="hidden" onchange="checkSelection()">
+        <option value="">Select Class</option>
+    </select>
 
-    <!-- Subject Selection (for Primary & Ordinary Level) -->
-    <label for="subject" id="subjectLabel" style="display:none;">Choose Subject:</label>
-    <select id="subject" style="display:none;"></select>
+    <!-- Advanced Level dropdowns (initially hidden) -->
+    <div id="advancedLevelSection" class="hidden">
+        <select id="advancedCombination" onchange="updateClassForAdvancedLevel()">
+            <option value="">Choose the Combination</option>
+            <option value="TVET">TVET</option>
+            <option value="ANP">ANP</option>
+            <option value="TTC">TTC</option>
+            <option value="GSS">GSS</option>
+        </select>
 
-    <!-- Combination Selection (for Advanced Level) -->
-    <label for="combination" id="combinationLabel" style="display:none;">Choose Combination:</label>
-    <select id="combination" style="display:none;"></select>
+        <select id="advancedClasses" class="hidden">
+            <option value="">Select Class</option>
+        </select>
+    </div>
 
-    <!-- Sub-Combination Selection (for Advanced Level) -->
-    <label for="subCombination" id="subCombinationLabel" style="display:none;">Choose Sub-Combination:</label>
-    <select id="subCombination" style="display:none;"></select>
-    
-     <!-- Class Selection -->
-    <label for="class" id="classLabel" style="display:none;">Choose Class:</label>
-    <select id="class" style="display:none;"></select>
+    <!-- Next Button -->
+    <button id="nextButton" class="hidden" onclick="goToNextPage()">Next</button>
 
-    <!-- NEXT Button -->
-    <button id="nextBtn" style="display:none;">NEXT</button>
-    <p id="errorMsg" style="color: red; display: none;"></p>
+    <script>
+        function updateClassOptions() {
+            let classCategory = document.getElementById('classCategory').value;
+            let classLevel = document.getElementById('classLevel');
+            let advancedLevelSection = document.getElementById('advancedLevelSection');
+            let advancedCombination = document.getElementById('advancedCombination');
+            let advancedClasses = document.getElementById('advancedClasses');
+            let nextButton = document.getElementById('nextButton');
 
-<!-- Footer at the bottom -->
-<footer>
-    <p>Email: support@fleduacademy.com</p>
-    <p>&copy; 2025 FL EduAcademy. All rights reserved.</p>
-</footer>
-    <script src="/js/revision.js"></script> <!-- External JavaScript file -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script type="module" src="/js/profile.js"></script>
+            // Hide advanced level section and reset all options
+            advancedLevelSection.classList.add('hidden');
+            advancedCombination.value = "";
+            advancedClasses.classList.add('hidden');
+            advancedClasses.innerHTML = '<option value="">Select Class</option>';
+
+            // Clear class level dropdown options
+            classLevel.innerHTML = '<option value="">Select Class</option>';
+            classLevel.classList.add('hidden');
+
+            // Show options based on class category
+            if (classCategory === 'lowerPrimary') {
+                classLevel.innerHTML += '<option value="P1">P1</option><option value="P2">P2</option><option value="P3">P3</option>';
+            } else if (classCategory === 'upperPrimary') {
+                classLevel.innerHTML += '<option value="P4">P4</option><option value="P5">P5</option><option value="P6">P6</option>';
+            } else if (classCategory === 'ordinaryLevel') {
+                classLevel.innerHTML += '<option value="S1">S1</option><option value="S2">S2</option><option value="S3">S3</option>';
+            } else if (classCategory === 'advancedLevel') {
+                advancedLevelSection.classList.remove('hidden');
+                nextButton.classList.remove('hidden');
+            }
+
+            classLevel.classList.remove('hidden');
+        }
+
+        function updateClassForAdvancedLevel() {
+            let advancedCombination = document.getElementById('advancedCombination').value;
+            let advancedClasses = document.getElementById('advancedClasses');
+            
+            advancedClasses.classList.remove('hidden');
+            advancedClasses.innerHTML = '<option value="">Select Class</option>';
+
+            if (advancedCombination === 'TVET') {
+                advancedClasses.innerHTML += '<option value="L3">L3</option><option value="L4">L4</option><option value="L5">L5</option>';
+            } else if (advancedCombination === 'ANP') {
+                advancedClasses.innerHTML += '<option value="S4">S4</option><option value="S5">S5</option><option value="S6">S6</option>';
+            } else if (advancedCombination === 'TTC') {
+                advancedClasses.innerHTML += '<option value="Y1">Y1</option><option value="Y2">Y2</option><option value="Y3">Y3</option>';
+            } else if (advancedCombination === 'GSS') {
+                advancedClasses.innerHTML += '<option value="S4">S4</option><option value="S5">S5</option><option value="S6">S6</option>';
+            }
+        }
+
+        function checkSelection() {
+            let classCategory = document.getElementById('classCategory').value;
+            let classLevel = document.getElementById('classLevel').value;
+            let advancedCombination = document.getElementById('advancedCombination').value;
+            let advancedClass = document.getElementById('advancedClasses').value;
+
+            let nextButton = document.getElementById('nextButton');
+
+            // Check if the necessary fields are selected
+            if ((classCategory === 'advancedLevel' && advancedCombination !== "" && advancedClass !== "") || 
+                (classCategory !== 'advancedLevel' && classLevel !== "")) {
+                nextButton.classList.remove('hidden');
+            } else {
+                nextButton.classList.add('hidden');
+            }
+        }
+
+        function goToNextPage() {
+            // Redirect to next page based on selection (can modify this logic as per your flow)
+            alert("Proceeding to the next page...");
+            // For now, let's just log the selections
+            let classCategory = document.getElementById('classCategory').value;
+            let classLevel = document.getElementById('classLevel').value;
+            let advancedCombination = document.getElementById('advancedCombination').value;
+            let advancedClass = document.getElementById('advancedClasses').value;
+
+            console.log(`Class Category: ${classCategory}`);
+            console.log(`Class Level: ${classLevel}`);
+            console.log(`Advanced Combination: ${advancedCombination}`);
+            console.log(`Advanced Class: ${advancedClass}`);
+        }
+    </script>
+
 </body>
 </html>
-
