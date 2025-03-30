@@ -5,7 +5,12 @@ const data = {
         "Upper Primary": ["Primary 4", "Primary 5", "Primary 6"]
     },
     ordinary: {
-        "Ordinary Level": ["Senior 1", "Senior 2", "Senior 3"]
+        "Ordinary Level": {
+            "Mathematics": ["Senior 1", "Senior 2", "Senior 3"],
+            "Science": ["Senior 1", "Senior 2", "Senior 3"],
+            "Social Studies": ["Senior 1", "Senior 2", "Senior 3"],
+            "English": ["Senior 1", "Senior 2", "Senior 3"]
+        }
     },
     advanced: {
         "TTC": {
@@ -65,23 +70,25 @@ categorySelect.addEventListener("change", function () {
     resetDropdown(combinationSelect);
     resetDropdown(subCombinationSelect);
     resetDropdown(classSelect);
-    nextButton.style.display = "none";
+    nextButton.style.display = "none"; // Hide next button initially
 
     if (this.value === "Primary") {
         updateDropdown(classSelect, Object.keys(data.primary));
     } else if (this.value === "Ordinary") {
-        updateDropdown(classSelect, data.ordinary["Ordinary Level"]);
+        updateDropdown(classSelect, Object.keys(data.ordinary["Ordinary Level"]));
     } else if (this.value === "Advanced") {
         updateDropdown(combinationSelect, Object.keys(data.advanced));
     }
 });
 
-// Handle class selection for Primary
+// Handle class selection for Primary and Ordinary Level
 classSelect.addEventListener("change", function () {
     resetDropdown(subjectSelect);
-
+    
     if (categorySelect.value === "Primary") {
         updateDropdown(subjectSelect, data.primary[this.value]);
+    } else if (categorySelect.value === "Ordinary") {
+        updateDropdown(subjectSelect, data.ordinary["Ordinary Level"][this.value]);
     }
 
     checkIfReadyToProceed();
@@ -91,6 +98,7 @@ classSelect.addEventListener("change", function () {
 combinationSelect.addEventListener("change", function () {
     resetDropdown(subCombinationSelect);
     resetDropdown(classSelect);
+    resetDropdown(subjectSelect);
 
     if (this.value === "ANP") {
         updateDropdown(classSelect, data.advanced.ANP);
@@ -109,18 +117,12 @@ classSelect.addEventListener("change", checkIfReadyToProceed);
 
 // Check if selections are complete before displaying the next button
 function checkIfReadyToProceed() {
-    let category = categorySelect.value;
-    let classValue = classSelect.value;
-    let subjectValue = subjectSelect.value;
-    let combinationValue = combinationSelect.value;
-    let subCombinationValue = subCombinationSelect.value;
-
     if (
-        (category === "Primary" && classValue && subjectValue) ||
-        (category === "Ordinary" && classValue) ||
-        (category === "Advanced" && combinationValue && 
-            ((combinationValue === "ANP" && classValue) || 
-            (subCombinationValue && classValue)))
+        (categorySelect.value === "Primary" && classSelect.value && subjectSelect.value) ||
+        (categorySelect.value === "Ordinary" && classSelect.value && subjectSelect.value) ||
+        (categorySelect.value === "Advanced" && combinationSelect.value && 
+         ((combinationSelect.value === "ANP" && classSelect.value) || 
+         (subCombinationSelect.value && classSelect.value)))
     ) {
         nextButton.style.display = "block";
     } else {
@@ -133,20 +135,18 @@ nextButton.addEventListener("click", function () {
     let category = categorySelect.value.toLowerCase();
     let selectedClass = classSelect.value.replace(/\s+/g, "").toLowerCase();
     let selectedSubject = subjectSelect.value ? subjectSelect.value.replace(/\s+/g, "").toLowerCase() : "";
-    let selectedCombination = combinationSelect.value ? combinationSelect.value.replace(/\s+/g, "").toLowerCase() : "";
-    let selectedSubCombination = subCombinationSelect.value ? subCombinationSelect.value.replace(/\s+/g, "").toLowerCase() : "";
+    let selectedCombination = combinationSelect.value.replace(/\s+/g, "").toLowerCase();
+    let selectedSubCombination = subCombinationSelect.value.replace(/\s+/g, "").toLowerCase();
 
     let url = "";
 
-    if (category === "primary") {
-        url = `/${category}/${selectedClass}_${selectedSubject}.html`;
-    } else if (category === "ordinary") {
-        url = `/${category}/${selectedClass}.html`;
+    if (category === "primary" || category === "ordinary") {
+        url = `${selectedClass}_${selectedSubject}.html`;
     } else if (category === "advanced") {
         if (combinationSelect.value === "ANP") {
-            url = `/advanced/anp_${selectedClass}.html`;
+            url = `anp_${selectedClass}.html`;
         } else {
-            url = `/advanced/${selectedCombination}_${selectedSubCombination}_${selectedClass}.html`;
+            url = `${selectedCombination}_${selectedSubCombination}_${selectedClass}.html`;
         }
     }
 
